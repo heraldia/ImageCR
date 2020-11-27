@@ -1,0 +1,194 @@
+图片加密方案
+https://www.onlineocr.net/
+
+[An Adaptive Image-based Plagiarism Detection Approach]{
+https://www.gipp.com/wp-content/papercite-data/pdf/meuschke2018.pdf
+Abstract
+Identifying plagiarized content is a crucial task for educational and research institutions, funding agencies, and academic publishers. 
+ Plagiarism detection systems available for productive use reliably identify copied text, or near-copies of text, but oen fail to detect disguised forms of academic plagiarism, such as paraphrases, translations, and idea plagiarism. 
+To improve the detection capabilities for disguised forms of academic plagiarism, we analyze the images in academic documents as text-independent features. 
+We propose an adaptive, scalable, and extensible image-based plagiarism detection approach suitable for 'analyzing a wide range of image similarities' that we observed in academic documents. 
+e proposed detection approach integrates established image analysis methods, such as ~perceptual hashing, with newly developed similarity assessments for images, such as ratio hashing and position-aware OCR text matching. 
+We evaluate our approach using 15 image pairs that are representative of the ~spectrum of image similarity~ we observed in alleged and conrmed cases of academic plagiarism. 
+We embed the test cases in a collection of 4,500 related images from academic texts. 
+Our detection approach achieved a recall of 0.73 and a precision of 1. 
+ese results indicate that our image-based approach can complement other content-based feature analysis approaches to retrieve potential source documents for suspiciously similar content from large collections. 
+We provide our code as open source to facilitate future research on image-based plagiarism detection.
+
+6 CONCLUSION
+We introduced an image-based plagiarism detection approach that adapts itself to forms of image similarity found in academic work. 
+ e adaptivity of the approach is achieved by including methods that analyze heterogeneous image features, selectively employing analysis methods depending on their suitability for the input image, using a exible procedure to determine suspicious image similarities, and enabling easy inclusion of additional analysis methods in the future. 
+To derive requirements for our approach, we examined images contained in the VroniPlag collection. 
+is real-world collection is the result of a crowd-sourced project documenting alleged and conrmed cases of academic plagiarism. 
+From these cases, we introduced a classication of the image similarity types that we observed. 
+We subsequently proposed our adaptive image-based PD approach. 
+Our process integrates perceptual hashing, for which we extended the detection capabilities by including an extraction procedure for sub-images. 
+Since textual labels are common in academic images, we devised and integrated two approaches using OCR to extract text from images and use the textual features for similarity assessments. 
+To address the problem of data reuse, we integrated an analysis method capable of identifying equivalent bar charts. 
+To quantify the suspiciousness of identied similarities, we presented an outlier detection process. 
+e evaluation of our PD process demonstrates reliable performance and extends the detection capabilities of existing image-based detection approaches. 
+We provide our code as open source and encourage other developers to extend and adapt our approach.
+}
+[Google Paper: Better Image Search Though VisualRank / Image Rank - Search Engine Land] { 
+Danny Sullivan on April 28, 2008 at 5:24 am
+https://searchengineland.com/google-paper-better-image-search-though-visualrank-image-rank-13872
+ ranking images based on analyzing "visual links" between them.
+todo: do some experiments to validate this point.
+<Image search at the major search engines today largely relies on looking at words that are used around images — on the pages that host them, in image file names, and in ALT text associated with them. No real image recognition is done by any of the majors. Search for "apples," and they haven’t actually somehow scanned the images itself to "see" if they contain pictures of apples.>
+And point out which major search engines did like this.
+
+VisualRank
+
+[A Google Prototype for a Precision Image Search - The New York Times] { 
+https://www.nytimes.com/2008/04/28/technology/28google.html?_r=1&ex=1367121600&en=ac6eb44c66595942&ei=5088&partner=rssnyt&emc=rss&oref=slogin
+VisualRank, an algorithm for blending image-recognition software methods with techniques for weighting and ranking images that look most similar.
+Google does not disclose how many images it has cataloged, but it asserts that its Google Image Search is the “most comprehensive image search on the Web.”
+It then sorted the top 10 images both from its ranking system and the standard Google Image Search results. 
+With a team of 150 Google employees, it created a scoring system for image “relevance.” The researchers said the retrieval returned 83 percent less irrelevant images.
+“I think what they’re trying to accomplish is largely impossible,” he said. “Our belief is, there is not large-scale solutions.”//?
+}
+[p307-jingA.pdf  PageRank for Product Image Search] { 
+http://www.www2008.org/papers/pdf/p307-jingA.pdf
+}
+[Teaching Google To See Images - Search Engine Land] { 
+https://searchengineland.com/teaching-google-to-see-images-10920
+When you search for images on Google, Flickr or most other search engines, they aren’t examining the pixels that make up images. 
+Instead, search engines look for clues that might identify relevant images—clues like descriptive filenames, tags, text near an image (think captions) and even the anchor text of links that point directly at image files.
+Image analysis is algorithmically challenging, and computationally intensive to boot. 
+
+Nuno Vasconcelos, a professor of electrical engineering at the UCSD Jacobs School of Engineering, discusses the approach, called Supervised Multiclass Labeling (SML), in a recent news release from the school (hat tip to Threadwatch for the pointer).  // google autoML uses this?
+
+Notably, even though the researchers say that the image indexing technique allows them to cover larger collections of images at a lower computational cost than was previously possible, “the current version would still choke on the Internet’s vast numbers of public images.” So don’t expect to find the system replacing current image search on the general purpose search engines any time soon. // this is the truth
+这方面的论文少，所以当我们写一篇新论文时，可以引用的论文就少。而web media这种引用又不够严谨。
+
+eVision is a company that makes image search tools for enterprise applications, rather than web search, but it has several online demos available that show off its capabilities. 
+eVision uses “segmentation,” dividing an image into regions, which correspond approximately to objects or parts of objects in an image (this is similar to the UCSD approach described above). 
+Once these object regions are identified, the four basic properties of color, texture, shape, and object shading are extracted and stored in a condensed descriptor called a visual signature. 
+Similarity comparisons are then made on the visual signatures of objects in other images.
+
+我们可以做refine the results.
+Like.com is dead. 20190611 
+}
+
+[Want to learn more about content-based image search? Check out this 26 page white paper from Microsoft Research, Fundamentals of Content-Based Image Retrieval (PDF).] nothing
+http://research.microsoft.com/asia/dload_files/group/mcomputing/2003P/ch01_Long_v40-proof.pdf
+}
+
+github{{{2
+[AInoob/NooBox: A Chrome Extension that contains useful tools] { 
+noobox result same with google. 
+A Chrome Extension that contains useful tools https://ainoob.com/project/noobox
+https://chrome.google.com/webstore/detail/noobox/kidibbfcblfbbafhnlanccjjdehoahep
+https://github.com/AInoob/NooBox
+reactJS
+d:\b\viax\leoLi\NooBox\src\js\reverseImageSearch.js
+https://www.baidu.com/s?ie=utf-8&f=8&rsv_bp=1&ch=&tn=baiduerr&bar=&wd=
+https://www.bing.com/images/api/custom/details?
+https://yandex.com 
+http://iqdb.org/
+https://ascii2d.net/
+}
+[dessant/search-by-image: Browser extension for reverse image search, available on Chrome, Firefox and Opera] { good online image
+https://chrome.google.com/webstore/detail/search-by-image/cnojnbdhbhnkbcieeekonklommdnndci
+chrome extension
+https://github.com/dessant/search-by-image
+vue.js 
+Search Engines:
+Google Images
+Bing Images
+Yandex.Images
+Baidu Image Search
+TinEye Reverse Image Search
+Sogou Images
+Karma Decay
+trace.moe (WhatAnime)
+SauceNAO
+Iqdb
+Ascii2d
+Getty Images
+iStock
+Shutterstock
+Adobe Stock
+Depositphotos
+Pinterest
+Qihoo 360 Images
+Jingdong
+Taobao
+Alibaba China
+}
+[piyush-kansal/reverse-image-search] : Find images similar to the one image input by user using both text and image processing] { got
+https://github.com/piyush-kansal/reverse-image-search  matlab, 2016 N }
+[Yahoo Cloud Services] { 
+https://yahoocs.tumblr.com/
+yahoo datacenter, OpenStack powers the infrastructure fabric for Yahoo’s private cloud. 
+}
+
+chrome extension{{{2
+Search by Images,  dessant  good 
+https://mybrowseraddon.com/tineye.html only google and tineye
+
+yandex self data center
+Tineye reverse image search // only tineye
+[Image Search - Chrome Web Store] { https://chrome.google.com/webstore/detail/image-search/khaaaofbfbkijpiepkfcamahnafeljem  not working
+- www.istockphoto.com
+www.fotosearch.com
+www.picsearch.com
+images.search.yahoo.com
+- www.bing.com 
+- www.google.com
+}
+https://chrome.google.com/webstore/detail/huntress-reverse-image-se/nkhjamjppefmeceaokadfacbdmmcmdpg == google
+
+[Visual-Textual Joint Relevance Learning for Tag-Based Social Image Search - IEEE Journals & Magazine] { 
+https://ieeexplore.ieee.org/document/6212356
+tag-based social image search. 
+}
+[提供以图搜图功能的搜索引擎有哪些？ - 知乎] { !!!
+https://www.zhihu.com/question/20640263
+}
+[Google’s Latest Experiment Is Like Reverse Image Search For Color] { 03.30.18
+https://www.fastcompany.com/90166015/this-new-google-tool-is-like-reverse-image-search-for-color-palettes
+}
+[What Happened To Google Image Search And Why You Can No Longer View Images Directly | Lifehacker Australia] { 
+https://www.lifehacker.com.au/2018/02/what-happened-to-google-image-search-and-why-you-can-no-longer-view-images-directly/
+}
+[VisualRank: Applying PageRank to Large-Scale Image Search - IEEE Journals & Magazine] { good todo
+https://ieeexplore.ieee.org/document/4522561
+}
+[Getting started — image_match 0.2.1 documentation] { good to build an image search server
+https://image-match.readthedocs.io/en/latest/start.html#install-image-match
+}
+[Real time google and live image search re-ranking]{ good
+http://mmlab.ie.cuhk.edu.hk/archive/2008/Jingyu_Cui_MM08.pdf
+a realtime re-ranking algorithm to enhance the performance of Google Image Search and Microsoft Live Image Search, by letting user select a query image from text search results    
+}
+[Combining textual and visual cues for content-based image retrieval on the World Wide Web - IEEE Conference Publication] {  1998
+https://ieeexplore.ieee.org/document/694480
+}
+[Hierarchical clustering of WWW image search results using visual, textual and
+link information]{2004
+http://www.ee.columbia.edu/~sfchang/course/svia-F04/papers/hierarchical-clustering-acmmm04.pdf
+}
+[New Algorithms from UCSD Improve Automated Image Labeling] { 
+http://jacobsschool.ucsd.edu/news/news_releases/release.sfe?id=650
+}
+
+https://en.wikipedia.org/wiki/Google_data_centers 18 in total
+
+Flickr data center{{{2 on Yahoo!
+[Why does Flickr offer 1TB of storage for free yet charge $499/yr for 2TB? | ZDNet] { 
+https://www.zdnet.com/article/why-does-flickr-offer-1tb-of-storage-for-free-yet-charge-499yr-for-2tb/
+}
+[Flickr Architecture - High Scalability -] { 
+http://highscalability.com/flickr-architecture
+Search:
+- Two search back-ends: shards 35k qps on a few shards and Yahoo!’s (proprietary) web search
+- Owner’s single tag search or a batch tag change (say, via Organizr) goes to the Shards due to real-time requirements, everything else goes to Yahoo!’s engine (probably about 90% behind the real-time goodness)
+- Think of it such that you’ve got Lucene-like search
+tag-based social image search. 
+ps: shard may mean a cluster of servers.
+}
+[Sharding Pinterest: How we scaled our MySQL fleet – Pinterest Engineering – Medium] { 
+https://medium.com/@Pinterest_Engineering/sharding-pinterest-how-we-scaled-our-mysql-fleet-3f341e96ca6f
+pinterest = data center, timestamp sharding
+}
