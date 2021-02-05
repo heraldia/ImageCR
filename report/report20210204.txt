@@ -1,7 +1,27 @@
-I. Introduction 
-   1) Problem statement: Recently in China, there are a lot of controversies about the copyright of a picture. This problem has been troubled a lot of firms and companies. In       China, there was an incident about a company called ChinaVisual. On 2019.4.11. A picture of Blackhole is posted on the Chinavisual.com. But the problem is the copyright of this picture belongs to an organization called Event Horizon Telescope. Also, people found many images like the national flags and so on. Many people ask ChinaVisual:" Are those pictures belongs to you?" This kind of incidents don't just happen in China, things like stealing images and using illegally happens all over the world. The objective of me is to improve the environment like this. Is there a better method of protecting these images from there owner?
+I. Introduction
+   1) Problem statement:
+Recently in China, there are a lot of controversies about the copyright of a picture.
+This problem has been troubled a lot of firms and companies.
+In China, there was an incident about a company called ChinaVisual.
+On 2019.4.11.
+A picture of Blackhole is posted on the Chinavisual.com.
+But the problem is the copyright of this picture belongs to an organization called Event Horizon Telescope.
+Also, people found many images like the national flags and so on.
+Many people ask ChinaVisual:" Are those pictures belongs to you?" This kind of incidents don't just happen in China, things like stealing images and using illegally happens all over the world.
+The objective of me is to improve the environment like this.
+Is there a better method of protecting these images from there owner?
 	2) Related works: I separate my discovery into two different parts including: Image cluster and water mark.
 
 How can we know when our image is stole by other people.
-a) Reverse image search: There are already a lot of mature searching engine has a function called reverse image search. Examples like: Tineye, google, noobox and so on. The reverse image searching work when you have an image. For example, if you have an image of cat, you can put it into the reverse image searching, and it will provide you thousands of similar images whatever posted online. These searching engines are basic using a method called RGB. The method is simply find the red, green, blue value for each images and do comparison. If the similarity is bigger than 90%. Two pictures deem to be the same. 
+a)
+ Reverse image search:
+There are already a lot of mature searching engine has a function called reverse image search.
+Examples like:
+Tineye, google, noobox and so on.
+The reverse image searching work when you have an image.
+For example, if you have an image of cat, you can put it into the reverse image searching, and it will provide you thousands of similar images whatever posted online.
+These searching engines are basic using a method called RGB.
+The method is simply find the red, green, blue value for each images and do comparison.
+If the similarity is bigger than 90%.
+Two pictures deem to be the same.
 b)
