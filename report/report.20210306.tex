@@ -42,7 +42,7 @@ Q:How does the reverse image searching works?(image comparison)
 Most of the principle of searching engines are color-based
 The method is simply find the red, green, blue value(RGB value) for each images and do comparison.
 RGB value is an additive color model in which red, green, and blue light are added together in various ways to reproduce a broad array of colors.
-This method first collets the RGB value in each of the images and do comparison within them. % more related surveys
+This method first collects the RGB value in each of the images and do comparison within them. % more related surveys
 
 There are also other methods that can be used:
 -Using Pixel tolerance:
@@ -53,8 +53,10 @@ There are also other methods that can be used:
 
 
 2)Watermarks  % ref. Frequency_Domain_Watermarking_An_Overview.
+todo: definition watermark. resource: wiki, paper. pros & cons
 I collected the information that the most popular method is called Fourier Watermarking and other feasible watermarks.
-a)Fourier Watermarking
+a) Fourier Watermarking
+todo: definition fourier watermark. resource: wiki, paper. pros & cons, image [paper name]
 b)
 
 
@@ -62,8 +64,13 @@ b)
 
 
 
-image clustering
+# Image clustering
 1. color-based pixel, 1920*1080, computation is huge
+definition [paper] \cite{}
+history, why this exists, 
+how to implement == principle.
+pros cons
+applications
 
 2. visual information retrieval
 https://en.wikipedia.org/wiki/Information_retrieval
@@ -93,3 +100,35 @@ computation, storage (feature vectors, [90,90,40,40,0], [90,90,10,10,10];
 }
 
 This paper is going to discover this issue into two sub-topic: image cluster and water mark.
+
+Sketch
+# reverse image searching
+    color-based
+
+    feature_extraction   
+
+# copyright protection
+    Watermarks  
+# Image clustering
+    - color-based
+    - information-based [google pic...a ]
+    https://patents.google.com/patent/US7801893B2/en  
+    https://www.researchgate.net/publication/228943913_Clustering_visually_similar_images_to_improve_image_search_engines  {
+
+To cluster images into groups of visually similar images we propose to use the feature histograms as proposed above to represent the images and two well known clustering methods: k-means [McQueen 67] and LBG clustering [Dempster & Laird+77, Linde & Buzo+80]. 
+    }
+        - visual information retrieval
+         unstructured data
+        - feature_extraction   
+        - facial 
+
+        - Image Segmentation  
+
+Image Segmentation Using K -means Clustering Algorithm and Subtractive Clustering Algorithm¡î{
+https://www.sciencedirect.com/science/article/pii/S1877050915014143
+Subtractive clustering is a method to find the optimal data point to define a cluster centroid based on the density ofsurrounding data points9. This method is the extension of Mountain method, proposed by Chiu10. Mountain method is
+
+}
+
+k-means: 
+a mixture of Gaussians: 
