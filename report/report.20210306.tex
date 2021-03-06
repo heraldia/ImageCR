@@ -1,0 +1,95 @@
+\section{Introduction}
+%1) Problem statement:
+Recently in China, there are a lot of controversies about the copyright of pictures. This leads to a concept called image copyright. [citation from paper, ]
+This problem has been troubled a lot of photographers, firms and companies.Many of them went on a court to protect their works. But this weren't work so well. Here is a example recent years in China.
+There was an incident about a company called ChinaVisual
+On Apr. 11th, 2019, the China Visual Group(CVG) has been alleged to have published with its own watermark on their website, this made the cyberspace affairs to suspend its website.
+But the problem is,
+the copyright of this picture belongs to an organization called Event Horizon Telescope. This organization has first released the picture to the whole world and made a claim that was not meant for any commercial use.
+More over, people found other images of national flags which definitely not belongs to ChinaVisual.
+This kind of incidents don't just happen in China, things like stealing images and using illegally happens all over the world.
+
+The objective of me is to conduct a survey regarding to solving the issue of protection of image copyright.
+
+\section{Related Works}
+\begin{comment}
+
+
+\end{comment}
+
+This paper is going to discover this issue into two sub-topics: images clustering(comparison)and watermarking.
+
+Q: How can we know when our image is stole by other people?
+Their are two ways we can find know that our images are stolen by others.
+
+1)reverse image searching
+The definition of the reverse image searching is a search engine technology that takes an image file as input query and returns results related to the image.
+You can get the information containing:
+-similar images
+-the list of websites that contain the images
+-other dimensions of pictures you searched with
+
+The reverse image searching works when you have an image to input with.
+For example, if you have an image of cat,
+you can put it into the reverse image searching,
+and it will provide you thousands of similar images and also the information about the image whatever posted online.
+
+There are many mature reverse searching engine consisting google, tineye, noobox and so on.
+Many companies and individuals are using these engine in their daily life.
+
+Q:How does the reverse image searching works?(image comparison)
+
+Most of the principle of searching engines are color-based
+The method is simply find the red, green, blue value(RGB value) for each images and do comparison.
+RGB value is an additive color model in which red, green, and blue light are added together in various ways to reproduce a broad array of colors.
+This method first collets the RGB value in each of the images and do comparison within them. % more related surveys
+
+There are also other methods that can be used:
+-Using Pixel tolerance:
+%information
+-Using color tolerance:
+%information
+
+
+
+2)Watermarks  % ref. Frequency_Domain_Watermarking_An_Overview.
+I collected the information that the most popular method is called Fourier Watermarking and other feasible watermarks.
+a)Fourier Watermarking
+b)
+
+
+
+
+
+
+image clustering
+1. color-based pixel, 1920*1080, computation is huge
+
+2. visual information retrieval
+https://en.wikipedia.org/wiki/Information_retrieval
+item classification.
+
+
+3. todo survey, if this algo exists [cite this]
+if not exist, write into Proposed Method.
+
+thought:
+1. target image: opencv get its sketch_t Àÿ√Ëª≠.  feature engineering.
+
+hough line transformation
+
+benefits:
+applications:
+computation, storage (feature vectors, [90,90,40,40,0], [90,90,10,10,10];
+        machine learning model ).
+
+2. get set_of_sketches of images from tineye
+3. search if sketch_t is in set_of_sketches, set()
+
+{
+'ladder': [ index of images];
+'railroad': [ index of images];
+'road': [ index of images];
+}
+
+This paper is going to discover this issue into two sub-topic: image cluster and water mark.
