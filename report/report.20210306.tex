@@ -1,59 +1,73 @@
 \section{Introduction}
-%1) Problem statement:
-Recently in China, there are a lot of controversies about the copyright of pictures. This leads to a concept called image copyright. [citation from paper, ]
-This problem has been troubled a lot of photographers, firms and companies.Many of them went on a court to protect their works. But this weren't work so well. Here is a example recent years in China.
-There was an incident about a company called ChinaVisual
-On Apr. 11th, 2019, the China Visual Group(CVG) has been alleged to have published with its own watermark on their website, this made the cyberspace affairs to suspend its website.
-But the problem is,
-the copyright of this picture belongs to an organization called Event Horizon Telescope. This organization has first released the picture to the whole world and made a claim that was not meant for any commercial use.
-More over, people found other images of national flags which definitely not belongs to ChinaVisual.
-This kind of incidents don't just happen in China, things like stealing images and using illegally happens all over the world.
+Problem statement:
+Recently in China, there are a good deal off controversies about using pictures of others that is unauthorised.
+This leads to a concept called image copyright.
+Image copyright is used to protect the images owned by poeple or companies from copy or reproduce by others automatically.[https://www.pixsy.com/academy/image-user/using-copyrighted-images/]
+Basiclly, images are protected by the image copyright.
+But, many people and companies don't obey the rules, they may illegally use the images of others.
+This stealing problem has been troubled a lot of photographers, firms and companies.
+Many of them went on a court to protect their works. 
+But this weren't work so well because althogh there are copyright, there are still poeple using illegal images  without permisiion.
 
+Here is a example recent years in China.
+There was a company called ChinaVisual.
+On Apr.11th,2019, the China Visual Group(CVG) has been alleged to have published with its own watermark on their website, 
+this made the cyberspace affairs to suspend its website.
+But the problem is, the copyright of this picture belongs to an organization called Event Horizon Telescope. 
+This organization has first released the picture to the whole world and made a claim that was not meant for any commercial use.
+More over, people found other images of national flags which definitely not belongs to ChinaVisual.
+There are discussions on a chinese social media called weibo about the image copyright of this incident. 
+The Central Committee of the Communist Young League warned the ChinaVisual by using rhetorical question--Are those images of national flags yours?
+This kind of incidents don't just happen in China, things like stealing and using images illegally happens all over the world.
+
+Nowadays, people are putting more importance on the image copyright problem and this lead us to think,
+are there better and more effective way to protect the images?
 The objective of me is to conduct a survey regarding to solving the issue of protection of image copyright.
 
 \section{Related Works}
-\begin{comment}
+There have been many things done in the protection of the image copyright. 
+The related works are based on the reverse image search, watermark and the image clustering.
+Information also includes varieties of methods consisting RBG value, fourier, frequency domain watermarks and so on.
 
+\First{Reverse image searching}
+There are many cases that poeple don't know their image has been used by other illegally.
+Therefore, people need a tools to find out how can we know that their works has been stolen.
+One of the methods and the best mothods is reverse image searching.
 
-\end{comment}
-
-This paper is going to discover this issue into two sub-topics: images clustering(comparison)and watermarking.
-
-Q: How can we know when our image is stole by other people?
-Their are two ways we can find know that our images are stolen by others.
-
-1)reverse image searching
-The definition of the reverse image searching is a search engine technology that takes an image file as input query and returns results related to the image.
-You can get the information containing:
+Reverse image searching is a search engine technology that takes an image file as input query and returns results related to the image.[https://whatis.techtarget.com/definition/reverse-image-search]
+The results image will gives you the infromation as follow:
 -similar images
 -the list of websites that contain the images
 -other dimensions of pictures you searched with
-
-The reverse image searching works when you have an image to input with.
-For example, if you have an image of cat,
-you can put it into the reverse image searching,
-and it will provide you thousands of similar images and also the information about the image whatever posted online.
-
 There are many mature reverse searching engine consisting google, tineye, noobox and so on.
-Many companies and individuals are using these engine in their daily life.
+Many companies and individuals are using these engine in their works.
 
-Q:How does the reverse image searching works?(image comparison)
-
-Most of the principle of searching engines are color-based
+There are a plenty of good algorithm to attain the reverse image searching.
+Most of the principle of searching engines are color-based.
 The method is simply find the red, green, blue value(RGB value) for each images and do comparison.
 RGB value is an additive color model in which red, green, and blue light are added together in various ways to reproduce a broad array of colors.
 This method first collects the RGB value in each of the images and do comparison within them. % more related surveys
+（need help-no other good reference
 
-There are also other methods that can be used:
+There are also other good methods that can be used:
 -Using Pixel tolerance:
-%information
+[https://support.smartbear.com/testcomplete/docs/testing-with/checkpoints/regions/how-image-comparison-works.html]
+Pixel tolerence is a vlaue that seted to determine that if the two images to besimilar.
+It allowed number of dissimilar pixels. 
+If the number of different pixels is less than or equal to pixelTolerance, 
+then it can be considered the images to be identical.
 -Using color tolerance:
-%information
+This is a range of value of the rgb value(0-255) that needed to be set to determine if the picture is similar,
+Two pixels are considered identical if the difference between intensities of each of their color components does not exceed the specified value.
+For example,when colortolerance is 0, which is the default value, the compared pixels are considered identical only if they have exactly the same color. 
+When colortolerance is 255, pixels of any color are considered identical.
 
 
-
+\Second{Watermarks}
 2)Watermarks  % ref. Frequency_Domain_Watermarking_An_Overview.
-todo: definition watermark. resource: wiki, paper. pros & cons
+A watermark is an identifying image or pattern in paper that appears as various shades of lightness/darkness when viewed by transmitted light (or when viewed by reflected light, atop a dark background), 
+caused by thickness or density variations in the paper.[Wiki]
+Watermarks is the most common way to protect your own image.
 I collected the information that the most popular method is called Fourier Watermarking and other feasible watermarks.
 a) Fourier Watermarking
 todo: definition fourier watermark. resource: wiki, paper. pros & cons, image [paper name]
