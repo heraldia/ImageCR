@@ -90,7 +90,10 @@ Pixel tolerence is a vlaue that seted to determine that if the two images to bes
 It allowed number of dissimilar pixels. 
 If the number of different pixels is less than or equal to pixelTolerance, 
 then it can be considered the images to be identical.
--Using color tolerance:
+For example, there are two images that has 2 dissimilar pixels,
+if the pixel tolerance is 2, then these two images are identical.
+
+4)Using color tolerance:
 This is a range of value of the rgb value(0-255) that needed to be set to determine if the picture is similar,
 Two pixels are considered identical if the difference between intensities of each of their color components does not exceed the specified value.
 For example,when colortolerance is 0, which is the default value, the compared pixels are considered identical only if they have exactly the same color. 
@@ -99,18 +102,23 @@ When colortolerance is 255, pixels of any color are considered identical.
 
 \Second{Watermarks}
 % ref. Frequency_Domain_Watermarking_An_Overview.
-A watermark is an identifying image or pattern in paper that appears as various shades of lightness/darkness when viewed by transmitted light (or when viewed by reflected light, atop a dark background), 
-caused by thickness or density variations in the paper.[Wiki]
-Watermarks is the most common way to protect your own image.
-I collected the information that the most popular method is called Fourier Watermarking and other feasible watermarks.
-a) Fourier Watermarking
-todo: definition fourier watermark. resource: wiki, paper. pros & cons, image [paper name]
-b)
+In general, 
+watermarks are symbols which are placed into physical objects such as documents, photos, etc. and their purpose is to carry information about objects’ authenticity.
+[I. J. Cox, M. L. Miller, J. A. Bloom, J. Fridrich and T. Kalker, “Digital Watermarking and Steganography,” 2nd Edition, Morgan Kaufmann, Burlington, 2008.   [Citation Time(s):2]]
+Watermarks is the most common way to protect images.
+There are many capable watermarks for example Fourier Watermarking and other feasible watermarks.
+In the following, I will list the most popular and helpful watermarks nowadays.
+
+a) Fourier Watermarking[Poljicak, A. et al. “Discrete Fourier transform-based watermarking method with an optimal implementation radius.” J. Electronic Imaging 20 (2011): 033008.]
+Fourier watermarking are using a technology called fourier transform.
+Watermarks are embedded in magnitude of the Fourier transformation.
+Fourier transform is one of the multidimensional transforms which converts a signal from a time/space domain representation to a frequency domain representation.[Wikipedia]
 
 
 
-
-
+b) Frequency Domain watermark by exploiting self-inverting permutations
+[M. Chroni, A. Fylakis and S. Nikolopoulos, "Watermarking Images in the Frequency Domain by Exploiting Self-Inverting Permutations," Journal of Information Security, Vol. 4 No. 2, 2013, pp. 80-91. doi: 10.4236/jis.2013.42010.]
+//need more information
 
 \Third{Image clustering}
 1. color-based pixel, 1920*1080, computation is huge
