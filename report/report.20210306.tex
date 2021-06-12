@@ -113,7 +113,7 @@ a) Fourier Watermarking[Poljicak, A. et al. “Discrete Fourier transform-based 
 Fourier watermarking are using a technology called fourier transform.
 Watermarks are embedded in magnitude of the Fourier transformation.
 Fourier transform is one of the multidimensional transforms which converts a signal from a time/space domain representation to a frequency domain representation.[Wikipedia]
-
+//need more information
 
 
 b) Frequency Domain watermark by exploiting self-inverting permutations
@@ -121,7 +121,15 @@ b) Frequency Domain watermark by exploiting self-inverting permutations
 //need more information
 
 \Third{Image clustering}
-1. color-based pixel, 1920*1080, computation is huge
+Image clustering is one of the technology that grouping images into clusters such that the images within the same clusters are similar to each other, \
+while those in different clusters are dissimilar to each other.
+This can also be used in the first step of the reverse image search,
+because the database has so many different kinds of images,
+it's efficient to first do a image clustering.
+There are many clustering methods in the following:
+
+1. color-based pixel
+1920*1080, computation is huge
 definition [paper] \cite{}
 history, why this exists, 
 how to implement == principle.
@@ -135,6 +143,12 @@ item classification.
 
 3. todo survey, if this algo exists [cite this]
 if not exist, write into Proposed Method.
+
+4.k-means
+
+
+
+
 
 thought:
 1. target image: opencv get its sketch_t ���軭.  feature engineering.
@@ -154,8 +168,22 @@ computation, storage (feature vectors, [90,90,40,40,0], [90,90,10,10,10];
 'railroad': [ index of images];
 'road': [ index of images];
 }
+//cannot understand this part
 
-This paper is going to discover this issue into two sub-topic: image cluster and water mark.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 Sketch
 # reverse image searching
@@ -185,7 +213,6 @@ Subtractive clustering is a method to find the optimal data point to define a cl
 
 }
 
-k-means: 
-a mixture of Gaussians: 
+
 
 
