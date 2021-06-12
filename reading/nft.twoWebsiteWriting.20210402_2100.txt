@@ -1,0 +1,80 @@
+In this article, Christophe Verdot, founder of Signature Chain, explains how non-fungible tokens
+(NFTs) can make a difference in the digital art market.
+Fine art is a multibillion dollar market, which, in recent years, thanks to the rise of internet and digital technology, has been drifting from art galleries and auction houses to the web.
+
+Fraud in a digital age
+On the one hand, this shift makes art accessible to a much wider audience. However, on the other hand, // it raises the issues of authenticity and copyright protection.
+Due to digital technology advances, art replication and forgery have, unsurprisingly, become more sophisticated, // triggering concerns among sellers and buyers alike.
+// The art market is full of replicas and forgeries that can fool not just your average Joe, but also a seasoned enthusiast.
+Fraud has been on the rise globally, hitting physical as well as digital art.
+To respond to this challenge, artists have begun to certify their digital works on blockchain and distribute them over a peer-to-peer, InterPlanetary File System (IPFS) network. Crypto art, as it¡¯s been referred to, has been gaining prominence thanks to the immutability and decentralization of blockchain.
+
+However, another issue comes up. If a digital image is freely available for viewing or downloading, what value does it have? Producing or buying digital art becomes an uncertain prospect for artists and collectors, respectively, as images can be easily duplicated and plagiarized.
+If an art work can be replicated for free, it has a lower market value or none at all. Watermarking authentic works has been a common practice for artists, but advancements in technology are making this measure less effective.
+
+NFT as a solution
+To maintain the value of digital items, the blockchain-based concept of ¡°digital scarcity¡± has been introduced, which is exercised through non-fungible tokens (NFTs). NFT is a cryptographic token representing a unique object or part of it.
+// An NFT is created as a blockchain transaction that permanently links the token to a unique digital fingerprint or hash on an open, distributed and permanent ledger. The possession of an artwork and a corresponding NFT signifies a verified and undisputable ownership.
+=>  NFT is a blockchain-based transaction, which permanently links to a unique digital art work, including image, video, audio, etc. It helps the verification of the ownership for the possession of an artwork.
+
+NFTs can operate as provenance assuring that an artwork is genuine and providing accurate information on past ownerships.
+While online art auctions are notorious for bad provenance due to unscrupulous sellers claiming to have documented ownership of fraudulent art, NFTs emerge as a vital alternative. If an official blockchain address for a specific piece of digital art is published on relevant websites and social media, any user can verify the authenticity of the work.
+
+The immutability of blockchain ensures that an NFT as art documentation has not been altered or falsified.
+Tokenized art works are generally presented and shared as HD files, which might be intimidating for some artists and buyers. However, what gives value and scarcity to digital art is not a file itself but the ownership of a ¡°license¡± in the form of an NFT. // HD, the first 5000 day
+The owning of an NFT gives a buyer or collector the right to display and resell a connected work, but not the creation copyright nor the right to duplicate it commercially. The creator retains all intellectual property rights.
+
+// 10% refund to original artist.
+
+Due diligence still required
+Of course, blockchain technology is no magic. Nothing can prevent scam artists from replicating someone else¡¯s piece of digital art, tokenizing it and selling as their own, just like it is the case with physical art.
+Still, digital art is available on the internet for the entire world to see and critique. Therefore, fraud can be easily detected. Social media, in particular, have become a powerful tool in that respect. By engaging in fraud, artists put their reputation, public image and potential sales a risk.
+On the users¡¯ or buyers¡¯ side, it is still necessary to do minimal due diligence to avoid falling for fraud. Buying blindly from random and anonymous artists is not advisable. Artists should be able to display their portfolio and background, as well as their blockchain address.
+
+SIGN Art solution
+On the Waves blockchain, a project called SIGN Art is currently being developed by Signature Chain. The project aims to bring the Waves protocol¡¯s advantages to digital art creators and collectors.
+Thanks to its instant transactions and low fixed transaction fees, the Waves blockchain is a perfect fit for NFT issuance.
+The current crypto art market is heavily dominated by Ethereum. But the Ethereum blockchain is burdened by up-and-down gas costs, which has been a major source of complaints from collectors and artists.
+Over the past year, Signature Chain has developed a certification platform allowing anyone to certify any file or document on the Waves blockchain.
+On SIGN Art, the file certification feature will be available soon, allowing creators to certify their works with an option of tokenizing art for selling. SIGN Art could also be used as a portfolio of certified works and/or a digital art marketplace. A beta version of the service is already available on the testnet here: https://beta.sign-art.app.
+
+
+---
+Non-fungible token
+¡°The token ¡ª instead of a coin or a dollar ¡ª a token is a thing like at Chuck E. Cheese, where you get the little thing and put it in the machine,¡± Mohr said. ¡°A token is intended to not be a monetary thing.¡±
+Mohr instead says a token is something that is meant to be used, and cannot be exchanged for something of ¡°equal value.¡± What makes these tokens ¡°non-fungible¡± is that each token is not of equal value.
+Someone can pay $5 for game tokens at The Playhouse on S. Clinton Avenue in Rochester, but those only have value at that establishment. If The Playhouse were to offer tokens of a different value ¡ª say some only operated certain machines, or allowed for more plays ¡ª then they would be non-fungible.
+Mohr says that cryptocurrencies have moved to the token model so the SEC can¡¯t regulate them like a normal security.
+But how this works like a normal cryptocurrency is that each token is registered on the Blockchain; which again, is add-only technology. This ¡°add only¡± function, which makes it nearly impossible to edit or change its history, is key when it comes to making art into a NFT.
+¡°It¡¯s unique to the thing you have, and the ownership of it is locked in forever,¡± Mohr said.
+He continues by saying that he believes this is the digital equivalent of an artist selling prints, and labeling them 1/100, 2/100, etc.. The artist owns the original image, but will sell tangible copies (more on that an a spacious coffee mug metaphor coming up); but this way, it¡¯s in a digital form.
+¡°It lets you prove your ownership,¡± he said. ¡°That way, if I was going to sell it somebody, I could prove that I owned it¡­ We can go to the blockchain and check to see who owns copy 2 of 100. //
+¡°It¡¯s a new way of protecting artwork, and limited edition artwork,¡± he said.
+More on ownership in 3, 2, 1¡­
+
+Copyright
+News 8 spoke with copyright and intellectual law expert Steven Fox by phone to break down how NFTs apply to copyright law, but let¡¯s establish what copyright actually is.
+¡°It all traces back to the First Amendment¡¯s protection of expression,¡± Fox said, which was shortly followed by an insistence that copyright is a noun only; specifically two types of nouns:
+Those nouns refer to both the actual property, and the set of rights that the creator of the authorship has.
+But what defines authorship? As simply as possible, Fox says that things like facts, ideas, information, and processes are free. However, if those intangibles are filtered through a lens of what lawyers call ¡°a creative spark,¡± and then affixed to a tangible medium, it is protected by copyright.
+Example: the shape of a coffee mug is not protected. But, if an artist were to paint something their own creative interpretation of that shape onto a canvass, both the image itself (what Fox refers to as the authorship), as well as the canvass (the substrate).
+Typically, when someone buys a piece of art, whether it¡¯s a canvass, the hard drive, or the digital image itself, they buy the substrate and the rights to do whatever they want to it: hang it, store it, boil it, mash it, and maybe stick it in a stew¡­ But they do not buy the rights to the actual image itself.
+So here¡¯s how it comes together
+All of this copyright jargon is well and good, but what happens when a piece of art becomes a NFT? This is when, according to Fox, the ¡°functionality doctrine¡± in activated.
+¡°If an element of what you created is part of a thing that has value in itself, then it moves into an article of commerce,¡± he said.
+When a piece of art becomes a NFT, part of its use is to prove its own authenticity, meaning that it no longer can be protected by copyright.
+Fox used the example of a bike rack. An artist can create a very specific combination of metal tubes, creativity assemble the various bends, shapes, and colors, and call it art; but the functionality of the piece makes it a bike rack.
+And as we learned before, ideas and processes are free under copyright law.
+
+But here¡¯s the good news
+It is true that if a piece of art is assigned as a NFT, it is no longer protected by copyright. But the key piece is that the artist permission is needed.
+So all of these Twitter users, who Mohr says are often overseas and are very difficult to trace, who are assigning art to NFT without permission, and is therefore illegal, which ¡°has serious penalties.¡± 
+He also says that the reason these tokenizers are targeting digital art is because of the inherent difficulty of proving where a piece of digital art comes from in the first place. //
+
+A problem that would ironically be solved by artists using blockchain technology, assuming that artists don¡¯t use other kinds of evidence: social posts, photos of you working on the art, witness testimony, etc.
+¡°This is a new form of digital theft,¡± Mohr said.
+Fox, who after all is a copyright lawyer, says that artists can protect themselves even further by registering every single thing they do with the Library of Congress. That will provide them with even more protection.
+¡°They are trying to recreate the Library of Alexandria,¡± Fox said.
+Mohr does recognizes however that even though American artists who would be protected, that the anonymous and overseas nature of these tokenizers would make it very hard to legally defend.
+Mohr, long term, actually sees this as a good thing for artists, even if its ten years down the line.
+¡°If the artists are the ones creating the non-fungible token and selling it, then that supports the arts community,¡± he said. ¡°It¡¯s a way to get your work out there. And it doesn¡¯t just have to be digital art; it can be physical art. You take a photo, say its a physical item, but item one out of 100 is registered here.¡±

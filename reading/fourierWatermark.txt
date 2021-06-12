@@ -1,0 +1,16 @@
+(PDF) Frequency Domain Watermarking: An Overview {{{2 { 
+https://www.researchgate.net/publication/220413592_Frequency_Domain_Watermarking_An_Overview
+} 2}}}
+Color Image Watermarking Using Multidimensional Fourier Transforms - IEEE Journals & Magazine {{{2 { 
+https://ieeexplore.ieee.org/document/4451098
+} 2}}}
+Image Watermarking Based on Fourier-Mellin Transform | SpringerLink {{{2 { 
+https://link.springer.com/chapter/10.1007/978-3-030-51935-3_37
+} 2}}}
+A robust 3D point cloud watermarking method based on the graph Fourier transform | SpringerLink {{{2 { 
+https://link.springer.com/article/10.1007/s11042-019-08296-4?shared-article-renderer
+} 2}}}
+The Two-Dimensional Fourier Transform and Digital Watermarking จC Math กษ Programming {{{2 { 
+https://jeremykun.com/2013/12/30/the-two-dimensional-fourier-transform-and-digital-watermarking/
+} 2}}}
+

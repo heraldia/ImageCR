@@ -1,0 +1,50 @@
+non-fungible Token
+A non-fungible token (NFT) is a unit of data on a digital ledger called a blockchain, where each NFT can represent a unique digital item, and thus they are not interchangeable. NFTs can represent digital files such as art, audio, videos, items in video games and other forms of creative work.
+
+NFT全称为non-fungible Token，中文名叫非同质化通证。
+# NFT概念究竟是怎么回事 - 知乎 { https://zhuanlan.zhihu.com/p/265412363
+
+}/
+# 免费图片都能卖到4.5个亿，NFT到底是致富经还是韭菜刀？ { https://baijiahao.baidu.com/s?id=1695078424887292816&wfr=spider&for=pc
+
+}/
+# NFTs, explained: what they are, and why they’re suddenly worth millions - The Verge { https://www.theverge.com/22310188/nft-explainer-what-is-blockchain-crypto-art-faq
+}/
+# NFTs: How to Create, Buy and Sell Them - CoinDesk { https://www.coindesk.com/how-to-create-buy-sell-nfts
+good
+
+}/
+# ResearchGate { https://www.researchgate.net/search.Search.html?type=researcher&query=non-fungible%20Token
+
+}/
+
+# Non-fungible tokens are revolutionising the art world – and art theft | Cryptocurrencies | The Guardian { https://www.theguardian.com/technology/2021/mar/12/non-fungible-tokens-revolutionising-art-world-theft
+hd image , first 5000 days.
+}/
+
+
+# 8分鐘看懂NFT代幣，為什麼人們願意花幾百萬投資區塊鏈加密藝術交易？有什麼風險？Non-fungible Token NFT是泡沫還是數字貨幣投資的未來? - YouTube { https://www.youtube.com/watch?v=waNBj8o2_ks
+nothing
+}/
+
+# 从OpenSea项目看NFT项目的基本原理，IPFS为什么重要（459期） - YouTube { https://www.youtube.com/watch?v=yVptL8rMsBA
+
+}/
+
+<writing>
+## (PDF) Non Fungible Tokens: Kittens and Beyond. Available from: https://www.researchgate.net/publication/350062738_Non_Fungible_Tokens_Kittens_and_Beyond [accessed Apr 01 2021]. {
+NFT's as a service is a rising industry in 2020. One of the most famous service providers is 0xcert, an easy to use token gateway API  built on top of Ethereum. It offers services catering to all forms of industries and use cases, including art, rare items, supply chain, certificates & licenses, education credentials, and in-game collectibles. It combines the physical and digital worlds of blockchains by using secure tags attached to the physical item in the real world and this tag contains the keys required to access the asset on the blockchain, thus making it a highly effective way to prove and transfer ownership. Also, the API's provide a way for artists to make a percentage in royalty every time one of their assets is sold. This can be automated easily using smart contracts and provides a safe and effective way for them to receive money from their paintings and artwork .
+// cite title
+}/
+
+# NFTs help protect digital art’s value | by Christophe Verdot | Waves Protocol | Medium { https://medium.com/wavesprotocol/nfts-help-protect-digital-arts-value-940c73920e80
+
+}/
+# Non-fungible tokens: What they are and why artists are upset about work being ‘tokenized’ | RochesterFirst { https://www.rochesterfirst.com/news/digital-exclusives/non-fungible-tokens-what-are-they-and-why-are-artists-upset-about-their-work-being-tokenized/
+
+}/
+
+https://opensea.io/assets
+
+</writing>
+
