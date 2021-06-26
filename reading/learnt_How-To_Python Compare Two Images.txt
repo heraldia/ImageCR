@@ -1,0 +1,19 @@
+https://www.pyimagesearch.com/2014/09/15/python-compare-two-images/
+The first method is to use ~locality sensitive hashing~, which I’ll cover in a later blog post.
+~It’s important to note that a value of 0 for MSE indicates perfect similarity. A value greater than one implies less similarity and will continue to grow as the average difference between pixel intensities increases as well. //
+Furthermore, the equation in Equation 2 is used to compare two windows (i.e. small sub-samples) rather than the entire image as in MSE. ~Doing this leads to a more robust approach that is able to account for changes in the structure of the image, rather than just the perceived change. //
+Unlike MSE, the SSIM value can vary between -1 and 1, where 1 indicates perfect similarity. //
+While the MSE is substantially faster to compute, it has the major drawback of (1) being applied globally and (2) only estimating the perceived errors of the image. //
+On the other hand, SSIM, while slower, is able to perceive the change in structural information of the image by comparing local regions of the image instead of globally. //
+2. Also, I read the paper related to SSIM in which it was written that SSIM works for grayscale images only. Is it really so? !!! //
+SSIM is normally only applied to a single channel at a time. Traditionally, this normally means grayscale images. However, in both the case of MSE and SSIM just split the image into its respective Red, Green, and Blue channels, apply the metric, and then take the sum the errors/accuracy. This can be a proxy accuracy for the colorization of your image. //
+I would suggest treating this like an image search engine problem. I detail how to build a simple color-based image search engine in this post. However, color won’t be too helpful for identifying screws. So you’ll want to consider using a shape descriptor instead. For what it’s worth, I have another 30+ lessons on image descriptors and 20+ lessons on image search engines inside the // PyImageSearch Gurus course.
+from skimage.measure import compare_ssim as ssim // todo
+If you want to compute MSE for color images, simply compute MSE for each individual channel and average the results together. //
+But by searching further i got to know about a parameter ‘multichannel’ which when passed as True in the inbuilt ssim function gives mse for color images. 🙂 //
+I was wondering if I would be able to use the SSIM method to compare specific number of pixels (lets say 20×20 pixels) on a 720p image. What I need to do is compare each 20×20 with its corresponding 20×20 pixels on the other image and then give an SSIM value for each of these comparisons. would that be possible ? // 
+In short, I am just trying to apply the SSIM method to a block of pixels instead of the whole image. and then cycle through a number of pixel blocks until i cover the desired portion of the image. //
+Hi Adrian..The code written in this website (https://www.pyimagesearch.com/2014/09/15/python-compare-two-images/) does not work when we compare different views of a same monument.//
+I am working on a python code to compare two finger prints. I tried using SSIM but I realised it doesn’t take orientation into account. Could you help me with the same? //
+https://www.pyimagesearch.com/2017/06/19/image-difference-with-opencv-and-python/ todo
+Like I said, I’m using your EAST text detector tutorial for detecting text; I’m also doing a simple image subtraction/looking for mostly (~90%) black images in the result to detect duplicates; but that isn’t helping me with these scenarios where I’m dealing with contrast or partial image differences, since it ends up just showing white pixels in the areas where there are these sorts of nontrivial differences.

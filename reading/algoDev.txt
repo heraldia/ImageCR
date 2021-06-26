@@ -1,0 +1,226 @@
+ref {{{2
+[Google image search says api no loner available - Stack Overflow] { 
+https://stackoverflow.com/questions/34035422/google-image-search-says-api-no-longer-available
+Google's Custom Search Engine (CSE) API. image search, not reverse search
+
+[Custom Search JSON API  |  Custom Search  |  Google Developers] {
+https://developers.google.com/custom-search/v1/overview?hl=it
+20190417 N
+}
+}
+[ag-gipp/imageplag: ImagePlag is an adaptive, scalable, and extensible image-based plagiarism detection system suitable for analyzing a wide range of image similarities.] { good but not related with our requirements
+while it worth reading.
+https://github.com/ag-gipp/imageplag
+You can find the full documentation of the system at: docs/_build/html/index.html
+}
+
+- [android - Google reverse image search API - Stack Overflow] { parse html tags. feasible
+https://stackoverflow.com/questions/12997597/google-reverse-image-search-api
+
+https://images.google.com/searchbyimage?image_url=http://web.cs.iastate.edu/~yunfei/adl/img/3.png
+use postman?
+}
+
+MRISA{{{2
+- [vivithemage/mrisa: MRISA - Meta reverse image search api] { similar good
+https://github.com/vivithemage/mrisa
+https://mrisa.mage.me.uk/
+upload image url
+based on Google Cloud Vision API    
+20190418
+working
+
+[Cloud Vision API Documentation  |  Cloud Vision API Documentation  |  Google Cloud] { all set of functionality
+https://cloud.google.com/vision/docs/ }
+[Web detection tutorial  |  Cloud Vision API Documentation  |  Google Cloud] { 
+https://cloud.google.com/vision/docs/internet-detection 
+https://github.com/GoogleCloudPlatform/python-docs-samples/tree/master/vision/cloud-client/web
+}
+}
+try tineye
+
+ not related {{{2
+[An Image Search Application that Uses the Cloud AutoML Vision and AutoML Vision  |  Solutions  |  Google Cloud] {  auto label
+https://cloud.google.com/solutions/image-search-app-with-cloud-vision }
+[Python Client for Google Cloud Vision — google-cloud 546ae39 documentation] { 
+https://googleapis.github.io/google-cloud-python/latest/vision/index.html }
+2}}}
+
+市场上已经有的 成型网站{{{1
+imatag{{{2
+https://imatag.com/en/for-photographers/    
+
+https://imatag.com/en/blog/2018/01/03/imatag-an-unbreakable-watermark-to-protect-our-images/ ( 20191026 
+There are more or less effective solutions such as PixelRight or EXIF.co, but these cheap solutions offer only a low level of security with the only benefit a deterrent effect. )
+- https://imatag.com/en/blog/2017/06/14/comparing-two-drm-photos-web-pixelrights-vs-exif-co/
+https://exchange.adobe.com/creativecloud.details.101789.imatag-invisible-watermark-and-image-monitoring.html
+
+Imatag Uses Invisible Watermarks to Protect Your Photos ( https://petapixel.com/2017/12/22/imatag-uses-invisible-watermarks-protect-photos/ )
+%https://www.dpreview.com/news/4515543735/imatag-protects-your-images-with-invisible-watermarks
+REST API Documentation{{{2 todo 
+https://imatag.com/api/doc/#introduction
+2}
+https://imatag.com/en/blog/2018/04/09/6-examples-of-uses-of-digital-watermarking/ (
+The pixel values are changed in order to convey a secret message, but these modifications are subtle and perceptually shaped. // ?
+)
+https://imatag.com/en/pricing/
+3}
+http://lamark.io/#home {{{3 Imatag based on lamark
+http://lamark.io/download/?utm_source=imatagsite&utm_medium=blogpost&utm_campaign=digitalwatermark
+3}
+
+copyrihthub{{{2
+http://www.copyrihthub.org/technology/ api, show who own this copyright
+2}
+
+copytrack{{{2
+Image Plagiarize / Plagiarism Checker
+专业 收费的：
+https://www.copytrack.com/?gclid=Cj0KCQiAk-7jBRD9ARIsAEy8mh7EWzmSChln9ygdeoSq4WsYoDKpSDdtXBeB-s2LVxzA9G13cwzk684aAngCEALw_wcB
+- https://app.copytrack.com/docs/api/user#operation/update-tag
+image management system, no fingerprinting
+2}
+
+开源项目: 相似图片查找，基于有离线的图片集。这样的开源项目和算法很多，性能各异。
+
+傅里叶水印
+[阿里根据截图查到泄露者,用的什么黑科技？(数字盲水印) - _海阔天空 - 博客园] ( https://www.cnblogs.com/zkwarrior/p/5980191.html )
+1}
+
+ other products{{{2
+https://www.capture.co.uk/services/ nothing
+https://www.mauritius-images.com/en/search , similar to google image
+https://www.digimarc.com/support/product/digimarc-guardian-for-images-support/faq#dfi_1 Adobe Add-ons.
+2}
+
+tineye api{{{3
+这个提供api和报价。我们最差能赚得的差价够大，就可以。
+https://tineye.com/
+https://github.com/TinEye/tineyeservices_python    
+https://services.tineye.com/library/python/docs
+这个提供api和报价。我们最差能赚得的差价够大，就可以。
+
+0 results
+Searched over 36.4 billion images for: img.pconline.com.cn/images/upload/upc/tx/itbbs/1612/19/c6...
+0 results
+Searched over 36.4 billion images for: timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&s...
+358 results
+Searched over 36.4 billion images in 4.8 seconds for: upload.wikimedia.org/wikipedia/commons/thumb/3/3a/Cat03.j...    
+3}
+
+基于这个开发 Reverse Image Search：{{{3 
+https://www.prepostseo.com/reverse-image-search
+爬虫拔下3大搜索引擎的图片，开发图片相似度对比功能。
+免费的：
+https://images.google.com/?gws_rd=ssl
+https://graph.baidu.com/
+https://www.bing.com/images/discover?FORM=HDRSC2
+https://www.yandex.com/images/
+3}
+
+[10个识图网站 - 百度文库] {{{3
+https://wenku.baidu.com/view/a465441f25c52cc58bd6be8a.html
+dead website{
+similar-images.googlelabs.com 
+www.picitup.com
+www.tiltomo.com
+lab.ideeinc.com/upload/
+www.xcavator.net
+www.incogna.com
+www.terragalleria.com
+3}
+
+[图片总被盗，也许你该学习如何设置隐形水印 – FOTOMEN] {
+https://fotomen.cn/2018/01/04/invisible-watermarking/ }
+
+我的思路{{{1
+查找全图雷同，相似
+查找图中局部雷同，相似
+我们的工具输出可疑链接和截图。
+
+因为我们没有自己的图片集，所以我们最好是采用别人的api。
+我目前也不建议建立自己的图片集，因为有很多计算，存储，维护的云端费用。
+我们尽量把我们的负担做轻。
+
+现在能想到的2种模式。
+1. 客户把图片图纸直接给我方，我方代理查找。3天后，给客户答复结果。长期定时给客户更新查询结果。
+当然我们要保存客户的文件。
+2. 我们做出类似 yandex, tineye的ui，我们的会员（付费用户）自行查找。
+
+paper {{{2
+https://www.researchgate.net/publication/305287481_FTIP_A_tool_for_an_image_plagiarism_detection
+https://www.gipp.com/wp-content/papercite-data/pdf/meuschke2018.pdf
+
+[几种简单的图像加密方法 - 松间明月 - CSDN博客] {
+https://blog.csdn.net/u013626386/article/details/39736611/
+}
+[基于超混沌系统的图像文件加密方案 | 夏冰加密软件技术博客] {
+http://www.jiamisoft.com/blog/11614-chaohunduntuxiangjiami-2.html
+}
+ps  20190415
+一定要在图片表面做处理。
+比如加入低频或高频的分量。
+平均加入，或pattern（比如是很多水印）加入。
+[隐形水印_百度搜索] {
+https://www.baidu.com/s?wd=%E9%9A%90%E5%BD%A2%E6%B0%B4%E5%8D%B0&rsv_spt=1&rsv_iqid=0xc499d4b10001ade0&issp=1&f=8&rsv_bp=1&rsv_idx=2&ie=utf-8&tn=baiduhome_pg&rsv_enter=1&rsv_sug3=39&rsv_sug1=3&rsv_sug7=001&rsv_t=a2fcuIij3PrcPppb3%2FplsNEUDbrAU9ZVSGGhDQsLPBoLXnrFNo53xWcqiljUuj08AJE%2F
+}
+[一种在图像中嵌入隐形水印的方法、存储介质及系统与流程] {
+http://www.xjishu.com/zhuanli/55/201711229419.html
+}
+[“隐形”水印来了 ！终于有办法应对别人去掉水印盗用作品了 - 封面新闻] {
+http://www.thecover.cn/news/1165835
+9月17日，2018网络安全宣传周网络安全博览会在成都启动。现场，阿里巴巴集团安全双子座实验室自主研发的不可见水印技术向市民展示，“我们在作品中打上不可见水印，这样既不会影响作品的美感，如果有人盗用作品，我们又能通过技术让水印恢复证明版权。”现场工作人员介绍。
+}
+2}
+
+ opensourse projects{{{2
+相似图片查找，基于有离线的图片集。这样的开源项目和算法很多，性能各异。
+https://www.google.com/search?q=similar+image+search+github&oq=similar+image+search+github&aqs=chrome..69i57.72859j0j7&sourceid=chrome&ie=UTF-8
+
+{
+https://github.com/jacklul/e621-Batch-Reverse-Search // php
+https://github.com/jacklul/e621-Batch-Reverse-Search/blob/master/src/app.php
+backbones:  "http://saucenao.com/search.php" and
+"http://iqdb.harry.lu"
+}
+{
+https://github.com/EdjoLabs/image-match 
+similar pictures paper: An image signature for any kind of image, Wong et al. 
+Elasticsearch()
+ses = SignatureES(es)
+}
+
+[unsplash/tinplate: ⭐️ TinEye API wrapper] { ruby
+https://github.com/unsplash/tinplate
+}
+
+[Direct API — AdImage (Live) — Yandex Technologies] { N
+https://tech.yandex.com/direct/doc/dg-v4/live/AdImage-docpage/
+}
+[Pricing - IncandescentAPI] { Y 2015 api 
+http://incandescent.xyz/pricing/
+is this still alive?
+}
+[Nachtalb/reverse_image_search_bot: Telegram reverse image search bot @reverse_image_search_bot - not maintained] { good html yandex, iqdb, google, bing  python, need his server.
+https://github.com/Nachtalb/reverse_image_search_bot 
+20190417 tried
+20181217 not maintained     
+Send me images or stickers and I will send you direct reverse image search links for IQDB, Google, TinEye, Yandex and Bing. For anime images I recommend IQDB and TinEye, for other images I recommend to use Google Yandex, or TinEye.
+
+token
+https://core.telegram.org/bots#botfather
+}
+2}
+
+chrome extension{{{1 good
+noobox{{{2 best js
+https://chrome.google.com/webstore/detail/noobox/kidibbfcblfbbafhnlanccjjdehoahep
+https://github.com/AInoob/NooBox
+reverseImageSearch.js (/Users/y0f00k5/Documents/b/zimuZhu/NooBox/src/js/reverseImageSearch.js)
+
+search-by-image{{{2 js 
+https://github.com/dessant/search-by-image
+https://chrome.google.com/webstore/detail/search-by-image/cnojnbdhbhnkbcieeekonklommdnndci
+/Users/y0f00k5/Documents/b/zimuZhu/search-by-image/src/content/engines/mailru.js
+1}
+

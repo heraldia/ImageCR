@@ -1,0 +1,1029 @@
+https://www.pyimagesearch.com/2014/09/15/python-compare-two-images/
+How-To: Python Compare Two Images
+by Adrian Rosebrock on September 15, 2014 in Image Processing, Tutorials
+Would you have guessed that I’m a stamp collector?
+Just kidding. I’m not.
+But let’s play a little game of pretend.
+Let’s pretend that we have a huge dataset of stamp images. And we want to take two arbitrary stamp images and compare them to determine if they are identical, or near identical in some way.
+In general, we can accomplish this in two ways.
+The first method is to use ~locality sensitive hashing~, which I’ll cover in a later blog post.
+The second method is to use algorithms such as `Mean Squared Error (MSE) or the Structural Similarity Index (SSIM).`
+In this blog post I’ll show you how to use Python to compare two images using Mean Squared Error and Structural Similarity Index.
+Looking for the source code to this post?
+Jump right to the downloads section.
+OpenCV and Python versions:
+This example will run on Python 2.7/Python 3.4+ and OpenCV 2.4.X/OpenCV 3.0+.
+Our Example Dataset
+Let’s start off by taking a look at our example dataset:
+Figure 1: Our example image dataset. Left: The original image. Middle: The original image with contrast adjustments. Right: The original image with Photoshopped overlay.
+Figure 1: Our example image dataset. Left: The original image. Middle: The original image with contrast adjustments. Right: The original image with Photoshopped overlay.
+Here you can see that we have three images: (left) our original image of our friends from Jurassic Park going on their first (and only) tour, (middle) the original image with contrast adjustments applied to it, and (right), the original image with the Jurassic Park logo overlaid on top of it via Photoshop manipulation.
+Now, it’s clear to us that the left and the middle images are more “similar” to each other — the one in the middle is just like the first one, only it is “darker”.
+But as we’ll find out, Mean Squared Error will actually say the Photoshopped image is more similar to the original than the middle image with contrast adjustments. Pretty weird, right?
+Mean Squared Error vs. Structural Similarity Measure
+Let’s take a look at the Mean Squared error equation:
+Equation 1: Mean Squared Error
+Equation 1: Mean Squared Error
+While this equation may look complex, I promise you it’s not.
+And to demonstrate this you, I’m going to convert this equation to a Python function:
+Python Compare Two ImagesPython
+def mse(imageA, imageB):
+	# the 'Mean Squared Error' between the two images is the
+	# sum of the squared difference between the two images;
+	# NOTE: the two images must have the same dimension
+	err = np.sum((imageA.astype("float") - imageB.astype("float")) ** 2)
+	err /= float(imageA.shape[0] * imageA.shape[1])
+	# return the MSE, the lower the error, the more "similar"
+	# the two images are
+	return err
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+def mse(imageA, imageB):
+	# the 'Mean Squared Error' between the two images is the
+	# sum of the squared difference between the two images;
+	# NOTE: the two images must have the same dimension
+	err = np.sum((imageA.astype("float") - imageB.astype("float")) ** 2)
+	err /= float(imageA.shape[0] * imageA.shape[1])
+	# return the MSE, the lower the error, the more "similar"
+	# the two images are
+	return err
+So there you have it — Mean Squared Error in only four lines of Python code once you take out the comments.
+Let’s tear it apart and see what’s going on:
+On Line 7 we define our mse function, which takes two arguments: imageA and imageB (i.e. the images we want to compare for similarity).
+All the real work is handled on Line 11. First we convert the images from unsigned 8-bit integers to floating point, that way we don’t run into any problems with modulus operations “wrapping around”. We then take the difference between the images by subtracting the pixel intensities. Next up, we square these difference (hence mean squared error, and finally sum them up.
+Line 12 handles the mean of the Mean Squared Error. All we are doing is dividing our sum of squares by the total number of pixels in the image.
+Finally, we return our MSE to the caller one Line 16.
+MSE is dead simple to implement — but when using it for similarity, we can run into problems. The main one being that large distances between pixel intensities do not necessarily mean the contents of the images are dramatically different. I’ll provide some proof for that statement later in this post, but in the meantime, take my word for it.
+~It’s important to note that a value of 0 for MSE indicates perfect similarity. A value greater than one implies less similarity and will continue to grow as the average difference between pixel intensities increases as well. //
+In order to remedy some of the issues associated with MSE for image comparison, we have the Structural Similarity Index, developed by Wang et al.:
+Equation 2: Structural Similarity Index
+Equation 2: Structural Similarity Index
+The SSIM method is clearly more involved than the MSE method, but the gist is that SSIM attempts to model the perceived change in the structural information of the image, whereas MSE is actually estimating the perceived errors. There is a subtle difference between the two, but the results are dramatic.
+Furthermore, the equation in Equation 2 is used to compare two windows (i.e. small sub-samples) rather than the entire image as in MSE. ~Doing this leads to a more robust approach that is able to account for changes in the structure of the image, rather than just the perceived change. //
+The parameters to Equation 2 include the (x, y) location of the N x N window in each image, the mean of the pixel intensities in the x and y direction, the variance of intensities in the x and y direction, along with the covariance.
+Unlike MSE, the SSIM value can vary between -1 and 1, where 1 indicates perfect similarity. //
+Luckily, as you’ll see, we don’t have to implement this method by hand since scikit-image already has an implementation ready for us.
+Let’s go ahead and jump into some code.
+How-To: Compare Two Images Using Python
+Python Compare Two ImagesPython
+# import the necessary packages
+from skimage.measure import structural_similarity as ssim
+import matplotlib.pyplot as plt
+import numpy as np
+import cv2
+1
+2
+3
+4
+5
+# import the necessary packages
+from skimage.measure import structural_similarity as ssim
+import matplotlib.pyplot as plt
+import numpy as np
+import cv2
+We start by importing the packages we’ll need — matplotlib for plotting, NumPy for numerical processing, and cv2 for our OpenCV bindings. Our Structural Similarity Index method is already implemented for us by scikit-image, so we’ll just use their implementation.
+Python Compare Two ImagesPython
+# import the necessary packages
+from skimage.measure import structural_similarity as ssim
+import matplotlib.pyplot as plt
+import numpy as np
+import cv2
+def mse(imageA, imageB):
+	# the 'Mean Squared Error' between the two images is the
+	# sum of the squared difference between the two images;
+	# NOTE: the two images must have the same dimension
+	err = np.sum((imageA.astype("float") - imageB.astype("float")) ** 2)
+	err /= float(imageA.shape[0] * imageA.shape[1])
+	# return the MSE, the lower the error, the more "similar"
+	# the two images are
+	return err
+def compare_images(imageA, imageB, title):
+	# compute the mean squared error and structural similarity
+	# index for the images
+	m = mse(imageA, imageB)
+	s = ssim(imageA, imageB)
+	# setup the figure
+	fig = plt.figure(title)
+	plt.suptitle("MSE: %.2f, SSIM: %.2f" % (m, s))
+	# show first image
+	ax = fig.add_subplot(1, 2, 1)
+	plt.imshow(imageA, cmap = plt.cm.gray)
+	plt.axis("off")
+	# show the second image
+	ax = fig.add_subplot(1, 2, 2)
+	plt.imshow(imageB, cmap = plt.cm.gray)
+	plt.axis("off")
+	# show the images
+	plt.show()
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+def mse(imageA, imageB):
+	# the 'Mean Squared Error' between the two images is the
+	# sum of the squared difference between the two images;
+	# NOTE: the two images must have the same dimension
+	err = np.sum((imageA.astype("float") - imageB.astype("float")) ** 2)
+	err /= float(imageA.shape[0] * imageA.shape[1])
+	# return the MSE, the lower the error, the more "similar"
+	# the two images are
+	return err
+def compare_images(imageA, imageB, title):
+	# compute the mean squared error and structural similarity
+	# index for the images
+	m = mse(imageA, imageB)
+	s = ssim(imageA, imageB)
+	# setup the figure
+	fig = plt.figure(title)
+	plt.suptitle("MSE: %.2f, SSIM: %.2f" % (m, s))
+	# show first image
+	ax = fig.add_subplot(1, 2, 1)
+	plt.imshow(imageA, cmap = plt.cm.gray)
+	plt.axis("off")
+	# show the second image
+	ax = fig.add_subplot(1, 2, 2)
+	plt.imshow(imageB, cmap = plt.cm.gray)
+	plt.axis("off")
+	# show the images
+	plt.show()
+Lines 7-16 define our mse method, which you are already familiar with.
+We then define the compare_images function on Line 18 which we’ll use to compare two images using both MSE and SSIM. The mse function takes three arguments: imageA and imageB, which are the two images we are going to compare, and then the title of our figure.
+We then compute the MSE and SSIM between the two images on Lines 21 and 22.
+Lines 25-39 handle some simple matplotlib plotting. We simply display the MSE and SSIM associated with the two images we are comparing.
+Python Compare Two ImagesPython
+# import the necessary packages
+from skimage.measure import structural_similarity as ssim
+import matplotlib.pyplot as plt
+import numpy as np
+import cv2
+def mse(imageA, imageB):
+	# the 'Mean Squared Error' between the two images is the
+	# sum of the squared difference between the two images;
+	# NOTE: the two images must have the same dimension
+	err = np.sum((imageA.astype("float") - imageB.astype("float")) ** 2)
+	err /= float(imageA.shape[0] * imageA.shape[1])
+	# return the MSE, the lower the error, the more "similar"
+	# the two images are
+	return err
+def compare_images(imageA, imageB, title):
+	# compute the mean squared error and structural similarity
+	# index for the images
+	m = mse(imageA, imageB)
+	s = ssim(imageA, imageB)
+	# setup the figure
+	fig = plt.figure(title)
+	plt.suptitle("MSE: %.2f, SSIM: %.2f" % (m, s))
+	# show first image
+	ax = fig.add_subplot(1, 2, 1)
+	plt.imshow(imageA, cmap = plt.cm.gray)
+	plt.axis("off")
+	# show the second image
+	ax = fig.add_subplot(1, 2, 2)
+	plt.imshow(imageB, cmap = plt.cm.gray)
+	plt.axis("off")
+	# show the images
+	plt.show()
+# load the images -- the original, the original + contrast,
+# and the original + photoshop
+original = cv2.imread("images/jp_gates_original.png")
+contrast = cv2.imread("images/jp_gates_contrast.png")
+shopped = cv2.imread("images/jp_gates_photoshopped.png")
+# convert the images to grayscale
+original = cv2.cvtColor(original, cv2.COLOR_BGR2GRAY)
+contrast = cv2.cvtColor(contrast, cv2.COLOR_BGR2GRAY)
+shopped = cv2.cvtColor(shopped, cv2.COLOR_BGR2GRAY)
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+# load the images -- the original, the original + contrast,
+# and the original + photoshop
+original = cv2.imread("images/jp_gates_original.png")
+contrast = cv2.imread("images/jp_gates_contrast.png")
+shopped = cv2.imread("images/jp_gates_photoshopped.png")
+# convert the images to grayscale
+original = cv2.cvtColor(original, cv2.COLOR_BGR2GRAY)
+contrast = cv2.cvtColor(contrast, cv2.COLOR_BGR2GRAY)
+shopped = cv2.cvtColor(shopped, cv2.COLOR_BGR2GRAY)
+Lines 43-45 handle loading our images off disk using OpenCV. We’ll be using our original image (Line 43), our contrast adjusted image (Line 44), and our Photoshopped image with the Jurassic Park logo overlaid (Line 45).
+We then convert our images to grayscale on Lines 48-50.
+Python Compare Two ImagesPython
+# import the necessary packages
+from skimage.measure import structural_similarity as ssim
+import matplotlib.pyplot as plt
+import numpy as np
+import cv2
+def mse(imageA, imageB):
+	# the 'Mean Squared Error' between the two images is the
+	# sum of the squared difference between the two images;
+	# NOTE: the two images must have the same dimension
+	err = np.sum((imageA.astype("float") - imageB.astype("float")) ** 2)
+	err /= float(imageA.shape[0] * imageA.shape[1])
+	# return the MSE, the lower the error, the more "similar"
+	# the two images are
+	return err
+def compare_images(imageA, imageB, title):
+	# compute the mean squared error and structural similarity
+	# index for the images
+	m = mse(imageA, imageB)
+	s = ssim(imageA, imageB)
+	# setup the figure
+	fig = plt.figure(title)
+	plt.suptitle("MSE: %.2f, SSIM: %.2f" % (m, s))
+	# show first image
+	ax = fig.add_subplot(1, 2, 1)
+	plt.imshow(imageA, cmap = plt.cm.gray)
+	plt.axis("off")
+	# show the second image
+	ax = fig.add_subplot(1, 2, 2)
+	plt.imshow(imageB, cmap = plt.cm.gray)
+	plt.axis("off")
+	# show the images
+	plt.show()
+# load the images -- the original, the original + contrast,
+# and the original + photoshop
+original = cv2.imread("images/jp_gates_original.png")
+contrast = cv2.imread("images/jp_gates_contrast.png")
+shopped = cv2.imread("images/jp_gates_photoshopped.png")
+# convert the images to grayscale
+original = cv2.cvtColor(original, cv2.COLOR_BGR2GRAY)
+contrast = cv2.cvtColor(contrast, cv2.COLOR_BGR2GRAY)
+shopped = cv2.cvtColor(shopped, cv2.COLOR_BGR2GRAY)
+# initialize the figure
+fig = plt.figure("Images")
+images = ("Original", original), ("Contrast", contrast), ("Photoshopped", shopped)
+# loop over the images
+for (i, (name, image)) in enumerate(images):
+	# show the image
+	ax = fig.add_subplot(1, 3, i + 1)
+	ax.set_title(name)
+	plt.imshow(image, cmap = plt.cm.gray)
+	plt.axis("off")
+# show the figure
+plt.show()
+# compare the images
+compare_images(original, original, "Original vs. Original")
+compare_images(original, contrast, "Original vs. Contrast")
+compare_images(original, shopped, "Original vs. Photoshopped")
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+# initialize the figure
+fig = plt.figure("Images")
+images = ("Original", original), ("Contrast", contrast), ("Photoshopped", shopped)
+# loop over the images
+for (i, (name, image)) in enumerate(images):
+	# show the image
+	ax = fig.add_subplot(1, 3, i + 1)
+	ax.set_title(name)
+	plt.imshow(image, cmap = plt.cm.gray)
+	plt.axis("off")
+# show the figure
+plt.show()
+# compare the images
+compare_images(original, original, "Original vs. Original")
+compare_images(original, contrast, "Original vs. Contrast")
+compare_images(original, shopped, "Original vs. Photoshopped")
+Now that our images are loaded off disk, let’s show them. On Lines 52-65 we simply generate a matplotlib figure, loop over our images one-by-one, and add them to our plot. Our plot is then displayed to us on Line 65.
+Finally, we can compare our images together using the compare_images function on Lines 68-70.
+We can execute our script by issuing the following command:
+Python Compare Two ImagesShell
+$ python compare.py
+1
+$ python compare.py
+Results
+Once our script has executed, we should first see our test case — comparing the original image to itself:
+Comparing the two original images together.
+Figure 2: Comparing the two original images together.
+Not surpassingly, the original image is identical to itself, with a value of 0.0 for MSE and 1.0 for SSIM. Remember, as the MSE increases the images are less similar, as opposed to the SSIM where smaller values indicate less similarity.
+Now, take a look at comparing the original to the contrast adjusted image:
+Figure 3: Comparing the original and the contrast adjusted image.
+Figure 3: Comparing the original and the contrast adjusted image.
+In this case, the MSE has increased and the SSIM decreased, implying that the images are less similar. This is indeed true — adjusting the contrast has definitely “damaged” the representation of the image.
+But things don’t get interesting until we compare the original image to the Photoshopped overlay:
+Figure 4: Comparing the original and Photoshopped overlay image.
+Figure 4: Comparing the original and Photoshopped overlay image.
+Comparing the original image to the Photoshop overlay yields a MSE of 1076 and a SSIM of 0.69.
+Wait a second.
+A MSE of 1076 is smaller than the previous of 1401. But clearly the Photoshopped overlay is dramatically more different than simply adjusting the contrast! But again, this is a limitation we must accept when utilizing raw pixel intensities globally.
+On the other end, SSIM is returns a value of 0.69, which is indeed less than the 0.78 obtained when comparing the original image to the contrast adjusted image.
+Summary
+In this blog post I showed you how to compare two images using Python.
+To perform our comparison, we made use of the Mean Squared Error (MSE) and the Structural Similarity Index (SSIM) functions.
+While the MSE is substantially faster to compute, it has the major drawback of (1) being applied globally and (2) only estimating the perceived errors of the image. //
+On the other hand, SSIM, while slower, is able to perceive the change in structural information of the image by comparing local regions of the image instead of globally. //
+So which method should you use?
+It depends.
+In general, SSIM will give you better results, but you’ll lose a bit of performance.
+But in my opinion, the gain in accuracy is well worth it.
+Definitely give both MSE and SSIM a shot and see for yourself!
+Downloads:
+If you would like to download the code and images used in this post, please enter your email address in the form below. Not only will you get a .zip of the code, I’ll also send you a FREE 17-page Resource Guide on Computer Vision, OpenCV, and Deep Learning. Inside you'll find my hand-picked tutorials, books, courses, and libraries to help you master CV and DL! Sound good? If so, enter your email address and I’ll send you the code immediately!
+Email address:
+Your email address
+Resource Guide (it’s totally free).
+Get your FREE 17-page Computer Vision and Deep Learning Resource Guide PDF
+Enter your email address below to get my free 17-page Computer Vision, OpenCV, and Deep Learning Resource Guide PDF. Inside you'll find my hand-picked tutorials, books, courses, and Python libraries to help you master computer vision and deep learning!
+Your email address
+ compare images, mean squared error, mse, ssim, structural similarity index
+ Thresholding: Simple Image Segmentation using OpenCVGetting Started with Deep Learning and Python 
+207 Responses to How-To: Python Compare Two Images
+Xavier Paul November 26, 2014 at 4:53 am #
+Good day Adrian, I am trying to do a program that will search for an Image B within an Image A. I’m able to do with C# but it takes about 6seconds to detect image B in A and report its coordinates.
+Please can you help me?
+Adrian Rosebrock November 26, 2014 at 7:14 am #
+Hi Xavier. I think you might want to take a look at template matching to do this. I did a guest post over at Machine Learning Mastery on how to do this.
+dhuha April 6, 2019 at 10:52 am #
+hi adrian how r u, i think i need your advice, am working in aproject and i should be able to make compare bettween 2 imgs in the for reffrence metrics can u help me plz???
+Mark December 4, 2014 at 11:33 pm #
+Marvellous! It’s in a very good way to describe and teach. Thanks for the great work.
+Next step, would it be possible to mark the difference between the 2 pictures?
+Below is a simple way, but I am much looking forward to see an advance one. Thanks.
+from PIL import Image
+from PIL import ImageChops
+from PIL import ImageDraw
+imageA= Image.open(“Original.jpg”)
+imageB= Image.open(“Editted.jpg”)
+dif = ImageChops.difference(imageB, imageA).getbbox()
+draw = ImageDraw.Draw(imageB)
+draw.rectangle(dif)
+imageB.show()
+Adrian Rosebrock December 5, 2014 at 7:15 am #
+Hi Mark, a very simple way to visualize the difference between two images is to simply subtract one from the other. OpenCV has a built in function for this called cv2.subtract.
+Mark December 9, 2014 at 2:10 am #
+Hello dear Doctor Rosebrock,
+Many thanks for your reply, and guidance.
+I googled and I can only find some examples involved cv2.subtract for other purposes but not marking differences between 2 pictures.
+You have November and December posts using cv2.subtract but newbie like me just don’t get how to make it work to mark difference.
+Would you mind give an example, if you have time? Thanks.
+Adrian Rosebrock December 9, 2014 at 7:30 am #
+Hi Mark, if I understand correctly, are you trying to visualize the difference between two afters after applying the cv2.subtract function? If so, all you need to do is apply cv2.imshow on the output of cv2.subtract. Then you’ll be able to see your output.
+bhojak RAhul February 19, 2019 at 4:02 am #
+bro i have a project in biometric using face recognization for home security can u help some thing in that ????
+Adrian Rosebrock February 20, 2019 at 12:22 pm #
+I cover face recognition in this tutorial, I would suggest starting there.
+Mridula February 17, 2015 at 12:47 am #
+Hi Adrian,
+I need to compare 2 images under a masked region. Can you help me with that? I mean how to i extend this code to work for a subregion of the images. Also i do a lot of video processing, like comparing whether 2 videos are equal or whether the videos have any artifacts. I would like to make it automated. Any posts on that?
+Adrian Rosebrock February 17, 2015 at 6:52 am #
+Hi Mridula. If you’re comparing 2 masked regions, you’re probably better off using a feature based approach by extracting features from the 2 masked regions. However, if your 2 masked regions have the same dimensions or aspect ratios, you might be able to get away with SSIM or MSE. And if you’re interested in comparing two images/frames to see if they are identical, I would utilize image hashing.
+Umesh February 22, 2016 at 5:34 pm #
+Hi Mridula,
+I am looking something similar to what you are doing on automation of comparing 2 videos..
+Any input on what you are using and go ahead..
+Thanks in advance
+DAFUQER March 8, 2018 at 7:40 am #
+How to compare videos? using opencv python
+bhavesh March 19, 2015 at 2:51 am #
+can you guide regarding how to compare two card , one image (card) is stored in disk and second image(card ) to be compare has been taken from camera
+Adrian Rosebrock March 19, 2015 at 7:05 am #
+Hi Bhavesh, if you are looking to capture an image from your webcam, take a look a this post to get you started. It shows an example on how to access your webcam using Python + OpenCV. From there, you can take the code and modify it to your needs!
+Weston Renou March 19, 2015 at 4:13 pm #
+Thanks for this. I’ve inadvertently duplicated some of my personal photos and I wanted a quick way to de-duplicate my photos *and* a good entry project to start playing with computer vision concepts and techniques. And this is a perfect little project.
+Adrian Rosebrock March 19, 2015 at 4:42 pm #
+Hi Weston, I’m glad the article helped. You should also take a look at my post on image hashing.
+Wookyung An April 4, 2015 at 3:13 am #
+Hi,
+I am trying to evaluate the segmentation performance between segmented image and ground truth in binary image. In this case, which metric is suitable to compare?
+Thank you.
+Adrian Rosebrock April 4, 2015 at 7:13 am #
+That’s a great question. In reality, there are a lot of different methods that you could use to evaluate your segmentation. However, I would let your overall choice be defined by what others are using in the literature. Personally, I have not had to evaluate segmentation algorithms analytically before, so I would start by reading segmentation survey papers such as these and seeing what metrics others are using.
+Timothy Clemans April 18, 2015 at 1:06 pm #
+How do I compare images of different sizes?
+Adrian Rosebrock April 18, 2015 at 1:27 pm #
+Hey Timothy, if you want to compare images of different sizes using MSE and SSIM, just resize them to the same size, ignoring the aspect ratio. Otherwise, you may want to look at some more advanced techniques to compare images, like using color histograms.
+Pallavi March 15, 2018 at 5:11 am #
+How do I resize them to the same size ?
+Adrian Rosebrock March 19, 2018 at 5:57 pm #
+You can use the “cv2.resize” function. If you’re new to working with OpenCV and resizing images, no worries, but I would also suggest reading through Practical Python and OpenCV where I discuss the fundamentals of image processing using OpenCV. I hope that helps point you in the right direction!
+Ciaran April 21, 2015 at 4:23 am #
+Hi Adrian,
+That was a very informative post and well explained. I have it working with png images, do you know if it’s possible to compare dicom images using the same method?
+I have tried using the pydicom package but have not had any success.
+Any help or advice would be greatly appreciated!
+Adrian Rosebrock April 21, 2015 at 6:29 am #
+Hi Ciaran, I actually have not worked with DICOM images or the pydicom package before. But in general, if you can get your image into a NumPy format, then you’ll be able to apply OpenCV and scikit-image functions to it.
+Ciaran April 23, 2015 at 6:54 am #
+Thanks for the response, I have worked it out using NumPy and it’s now working for me. Thanks!
+Mohit November 24, 2016 at 5:37 pm #
+Hey Ciaran, glad to hear you got working with DICOM images in python and PIL. I’ve been having some trouble. Would you be able to send over some starter code on using numpy to bridge the two packages? Thanks!
+Primoz July 3, 2015 at 7:48 am #
+Thank you for this great post. I am wondering how post about locality sensitive hashing is advancing?
+Adrian Rosebrock July 3, 2015 at 10:27 am #
+Hey Primoz, thanks for the comment. Locality Sensitive Hashing is a great topic, I’ll add it to my queue of ideas to write about. My favorite LSH methods use random projections to construct randomly separating hyperplanes. Then, for each hyperplane, a hash is constructed based on which “side” the feature lies on. These binary tests can be compiled into a hash. It’s a neat, super efficient trick that tends to perform well in the real-world. I’ll be sure to do a post about it in the future!
+Arun July 14, 2015 at 8:10 am #
+Thank you for this great post. I am working on it . I would like to know how to convert the MSE to the percentage difference of the two images.
+budy August 9, 2015 at 10:37 pm #
+nice explanation….thanks
+Ninja November 22, 2015 at 6:07 pm #
+Hi Adrian
+Is there a way or a method exposed by scikit-image to write the diff between two images used to compare to another file?
+Also,Is there any way to ignore some elements/text in image to be compared?
+thanks
+Adrian Rosebrock November 23, 2015 at 6:34 am #
+To write the difference between two images to file, you could just use normal subtraction and subtract the two images from each other, followed by writing them to file. As for ignoring certain elements in the image, no, that cannot be done without heavily modifying the SSIM or MSE function.
+Saurav Mondal January 13, 2016 at 4:51 am #
+Hi Adrian, I have tried a lot to install skimage library for python 2.7. but it seems there is a problem with the installations. am not able to get any help. is there anyother possible package that could help regarding the same? I am actually trying to implement GLCM and Haralick features for finding out texture parameters. Also, is there any other site that can help regarding the Skimage library problem??
+Adrian Rosebrock January 13, 2016 at 6:31 am #
+Installing scikit-image can be done using pip:
+$ pip install -U scikit-image
+You can read about the installation process on this page. You weren’t specific about what error message you were getting, so I would suggest starting by following their detailed instructions. From there, you should consider opening a “GitHub Issue” if you think your error message is unique to your setup.
+Finally, if you want to extract Haralick features, I would suggest using mahotas.
+saurav January 13, 2016 at 11:31 pm #
+Thanks a lot adrian
+Umesh February 22, 2016 at 6:03 pm #
+Hi Adrian,
+I am working on a project in which i need to compare the two videos and give an out put with the difference between the reference video and the actual converted video. And this white process needs to be automated..
+Any input on this.
+Thanks in advance
+Adrian Rosebrock February 23, 2016 at 3:25 pm #
+If you’re looking for the simple difference between the two images, then the cv2.absdiff function will accomplish this for you. I demonstrate how to use it in this post on motion detection.
+vj March 14, 2016 at 12:09 pm #
+hi adrian…..I am working on a project in which i need to compare the image already stored with the person in the live streaming and i want to check whether those persons are same.
+Thanks in advance
+Adrian Rosebrock March 14, 2016 at 3:17 pm #
+That’s a pretty challenging, but doable problem. How are you comparing the people? By their faces? Their profile? Their entire body? Face identification would be the most reliable form of identification. In the case that people are allowed to enter and leave the frame (and change their clothing), you’re going to have an extremely hard time solving this problem.
+vj March 15, 2016 at 12:21 am #
+i want to compare by their faces
+Adrian Rosebrock March 15, 2016 at 4:33 pm #
+Got it, so you’re looking for face identification algorithms. There are many popular face identification algorithms, including LBPs and Eigenfaces. I cover both inside the PyImageSearch Gurus course.
+anu March 15, 2016 at 12:20 am #
+I want to compare an object captured from live streaming video with already stored image of the object.But i cant find the correct code for executing this.please help me
+Adrian Rosebrock March 15, 2016 at 4:34 pm #
+Hey Anu, you might want to take a look at Practical Python and OpenCV. Inside the book I detail how to build a system that can recognize the covers of books using keypoint detection, local invariant descriptors, and keypoint matching. This would be a good start for your project.
+Other approaches you should look into include HOG + Linear SVM and template matching.
+Eashan November 1, 2018 at 2:55 am #
+Hi Adrian, I want to do a comparison analysis for the signatures on bank cheque. Could you help me with the coding and the complete approach.
+Adrian Rosebrock November 2, 2018 at 7:20 am #
+Sorry, I do not have any experience with signature verification.
+Mohit April 7, 2016 at 1:42 pm #
+Hi Adrian, read your article and is quite helpful in what I am trying to achieve. Actually I am implementing algorithm for converting grayscale image to colored one based on the given grayscale image and an almost similar colored image. I have implemented it and now want to see how close is the resulting image to the given colored image. I have gone through your article and implemented what you have given here.
+1. Is there any other method to do so for colored images or will the same methods (MSE, SSIM and Locality Sensitive Hashing) work fine?
+2. Also, I read the paper related to SSIM in which it was written that SSIM works for grayscale images only. Is it really so? !!! //
+Adrian Rosebrock April 8, 2016 at 12:57 pm #
+SSIM is normally only applied to a single channel at a time. Traditionally, this normally means grayscale images. However, in both the case of MSE and SSIM just split the image into its respective Red, Green, and Blue channels, apply the metric, and then take the sum the errors/accuracy. This can be a proxy accuracy for the colorization of your image. //
+sakir mistry April 26, 2016 at 3:19 am #
+How can I compare stored image and capturing image as per the pixel to pixel comparison for open CV python for the Raspberry Pi
+Adrian Rosebrock April 26, 2016 at 5:12 pm #
+You can use this code — but you’ll need to adapt it so that you’re reading frames from your video stream
+Naveed May 7, 2016 at 1:32 pm #
+Hi,
+Very useful article, for a beginner like me.
+I want to compare two “JPG” images captured pi cam, and in result give a bit to GPIO
+images are stored in Pi SD card.
+please help
+thanks.
+Adrian Rosebrock May 8, 2016 at 8:05 am #
+There are various algorithms you can use to compare two images. I’ve detailed MSE and SSIM in this blog post. You could also compare images based on their color (histograms, moments), texture (LBPs, textons, Haralick), or even shape (Hu moments, Zernike moments). There is also keypoint matching methods which I discuss inside Practical Python and OpenCV. As for passing the result bit to the GPIO, be sure to read this blog post where I demonstrate how to use GPIO + OpenCV together. Next week’s blog post will also discuss this same topic.
+Rohan June 24, 2016 at 8:02 am #
+Hi Adrian,
+I am working in photgrammetry and 3D reconstruction.When the user clicks a point in the first image,i want that point to be automatically to be detected in the second image without the user selecting the point in the second image as it leads to large errors.How can this be done,i have tried cropping the portion around the point and trying to match it through brute force matcher and ORB.However it detects no points.
+Please suggest a technique!!
+I can solve for the point mathematically but i want to use image processing to get the point.
+Adrian Rosebrock June 25, 2016 at 1:33 pm #
+Solving for the point mathematically will always be more reliable than feature based matching methods. Do yourself a favor and do that instead.
+Anand Palanisamy July 20, 2016 at 1:04 am #
+Hey Adrian,
+I have a project where I have to use image comparison to identify whether two components are similar. 
+For example, there will be images of several screws from various angles imported from a database. 
+I will then have to compare the image of a particular screw against all these images and find the correct match and identify the type of screw. 
+The program would have to take into account the length, width and other dimensions. 
+I’m not quite sure as to how I would go about this.
+Adrian Rosebrock July 20, 2016 at 2:37 pm #
+I would suggest treating this like an image search engine problem. I detail how to build a simple color-based image search engine in this post. However, color won’t be too helpful for identifying screws. So you’ll want to consider using a shape descriptor instead. For what it’s worth, I have another 30+ lessons on image descriptors and 20+ lessons on image search engines inside the // PyImageSearch Gurus course.
+Anand Palanisamy July 21, 2016 at 1:53 am #
+Thanks,
+I will go through it. Also, this post was very interesting to read, even though it was completely irrelevant to my project. Great stuff.
+Subash Thakuri July 27, 2016 at 2:59 pm #
+does this same concept work for handwritten signature matching?
+Adrian Rosebrock July 29, 2016 at 8:43 am #
+It can, but only for signatures that are very aligned. Instead, I would recommend a different approach. There is a ton of research on handwritten signature matching. I would suggest starting with the research here and then expanding.
+JC July 28, 2016 at 12:08 am #
+I’m new to python but very interested to learn about this. Download the sample files but I’m getting this error.
+Traceback (most recent call last):
+File “/home/pi/Downloads/python-compare-two-images/compare.py”, line 5, in
+from skimage.measure import structural_similarity as ssim
+ImportError: No module named skimage.measure
+>>>
+Adrian Rosebrock July 29, 2016 at 8:39 am #
+Make sure you have installed scikit-image on your system — based on your error message, it seems that scikit-image is not installed.
+Sam August 3, 2016 at 9:35 pm #
+Thanks for the post Adrian!
+Just a very quick ask: If i am to compare a set of images with my reference image using MSE to see which one fits the most, taking the mean wouldn’t be necessary right? Since I can already compare them?
+Just wanna make sure, thanks!
+Adrian Rosebrock August 4, 2016 at 10:10 am #
+Correct, you would not need to take the mean — the squared error would still work.
+Chris August 18, 2016 at 3:08 am #
+Hey Adrian!
+thanks for your tut. i have compared in real time and i use raspberry pi to run my program. i use ssim to compare two frame but i have a problem that ssim algorithm use CPU to process, so it take me more than 10 sec to process two frame. And i know raspberry have GPU, and GPU can support to reduce time processing. do you know any algorithm in opencv to compare images? thank you so much 😀
+Adrian Rosebrock August 18, 2016 at 9:27 am #
+If it’s taking a long time to compare two images, I’m willing to bet that you are comparing large images (in terms of width and height). Keep in mind that we rarely process images larger than 400-600 pixels along the largest spatial dimension. The more data there is to process, the slower our algorithms run! And while the added detail of high resolution images is visually appealing to the human eye, those extra details actually hurt computer vision algorithm performance. For your situation, simply resize your images and SSIM will run faster.
+Chris August 18, 2016 at 10:09 am #
+you are right. my program is processing images with 640x480px and i get every frame from camera raspi capture. I test it on my computer with windows OS, it just take less than 1 sec to process 2 images, but when i use and convert that script to run on raspberry, it take more than 10 sec. It make me feel boring. I know raspberry can’t run fast as computer, so i want it process 2 image less than 5 sec, that’s great 😀 i use raspberry pi 2 and camera pi module.
+Adrian Rosebrock August 22, 2016 at 1:44 pm #
+If you’re running the script on the Pi, make sure you use threading to improve the FPS rate of your pipeline.
+Jason Cameron September 14, 2016 at 7:58 pm #
+Hi Adrian.
+Thank you for your nice tutorial.
+I am just a beginner in image processing and it would be great if you answer my questions.
+I have a bunch of photos of clothes (some of them are clothes themselves and the rest of them are human wearing them).
+I’d like to get similar photos from them with an input image.
+1. Is this image search or image compare?
+2. To do this, what methods do you recommend?
+Thank you again.
+Adrian Rosebrock September 15, 2016 at 9:31 am #
+There are many, many different ways to build an image search engine. In general, you should try to localize the clothing in the images before quantifying them and comparing them. I would also suggest utilizing the bag of visual words model, followed by spatial verification and keypoint matching. I cover building image search engines in-depth inside the PyImageSearch Gurus course.
+Cheni December 13, 2018 at 8:45 am #
+Dear adiram our error coming on the line no. 4 near err = np.sum((imageA.astype(“float”) – imageB.astype(“float”)) ** 2)
+Error shows on err with red so where is oue error
+Please tell me
+Adrian Rosebrock December 13, 2018 at 8:49 am #
+What is the exact error you are encountering? Without knowing the exact error I cannot provide any suggestions.
+Mike October 6, 2016 at 10:38 am #
+Hello Adrian,
+Thank for the awesome work you’ve done here. Your tutorial works like a charm, but I’ve been playing around some large satellite images and I get a MemoryError at the mse calculation. 5000*5000 works fine but 7500*6200 throws it out of memory.
+Is it only dependent on my system’s RAM?
+Is there a way to split the array to smaller ones and still have the same result?
+Thanks in advance!
+Adrian Rosebrock October 7, 2016 at 7:35 am #
+Please see my reply to “Chris” above. You would rarely process an image larger than 600px along it’s maximum dimension. In short, try resizing your images — there won’t be any memory issue. And depending on the contents of your satellite imagery you shouldn’t see any loss in accuracy either.
+Goran October 14, 2016 at 5:47 am #
+I was looking for a way to use android camera as “liveview device” for old analog SLR (saw some YT, not my original idea) and possibility of taking a digital photo with all the exif data after analog camera snaps it’s photo. So this method could find similar photos between analog scans and digital batch (with all the viewfinder analog data – focusing tools, various numbers, dials etc.) and embed all the relevant data into scans. Am I on the right track here?
+Adrian Rosebrock October 15, 2016 at 9:56 am #
+It depends on the quality of the images and how much they vary. Do you have any examples of your images from the two different sources?
+Goran October 17, 2016 at 4:12 am #
+Hi,
+not yet, I am currently working on a rig that would secure smartphone behind SLR. I was trying with sticky mat but the phone keeps failing off. Actually, to reduce costs I will be testing the setup with DSLR.
+After some thinking I found some obstacles, ex: viewfinder does not represent 100% of image and there are black stripes where data in viewfinder is displayed + so the matching script would first have to crop smartphone pictures (crop parameters are unique from camera to camera, and in case of freely positioned smartphone + from session to session) and then try to compare the images. will inform you when/if it goes alive. thanks
+Sakshi Shreya November 20, 2016 at 7:38 am #
+I was trying to compare an image with a part of another image. The method was not working when I used if condition. Then after a lot of search, I ended up here. Finally, your mean square method worked. Thank you.
+Adrian Rosebrock November 21, 2016 at 12:34 pm #
+I’m glad the post helped Sakshi!
+Anonym helper December 3, 2016 at 7:01 am #
+You shouldn’t import
+skimage.measure import structural_similarity as ssim
+because structural_similarity is depricated.
+Use
+from skimage.measure import compare_ssim as ssim // todo
+instead
+Diane December 12, 2016 at 2:47 pm #
+!!
+Thanks! For others who have asked questions, the compare_ssim function (as opposed to the deprecated structural_similarity) accepts multi-channel (such as RGB) images (and averages the SSIM of each channel). It may be faster on large images due to a more optimized algorithm. Also, it will optionally return an image of the SSIM patches, so that you can see which regions of the image match.
+Adrian Rosebrock December 14, 2016 at 8:46 am #
+Thank you for sharing Diane! I will play around with the updated compare_ssim function and consider writing an updated blog post.
+Justice January 19, 2017 at 7:07 am #
+Hello Adrian, and thank you very much for all that you do.
+I am having an issue with simm whilst comparing a saved image (50x40px, .png) and a frame grabbed using my usbcam. I have sliced the np.array to the corresponding size before the comparison (I used the same method to aquire and save the .png) and both report the same size when I use the np.size(img, 0/1) methods. Is there some outlying issue I am overlooking? Because I always get the error message saying that the two images must be the same dimensions. Thank you
+Adrian Rosebrock January 20, 2017 at 11:03 am #
+Hey Justice — be sure to check the image.shape, not the .size. It could be that your slicing isn’t correct.
+Kush January 25, 2017 at 3:25 pm #
+unable to print values of mse and ssim……please help….
+Kenil March 14, 2017 at 12:38 am #
+Hey
+Can the above described algorithms be used for comparing human faces with decent accuracy?
+If not can you suggest what I can do?
+Thanks!
+Adrian Rosebrock March 15, 2017 at 9:00 am #
+For recognizing faces in images I would recommend Eigenfaces, Fisherfaces, LBPs for face recognition, or embeddings using deep learning. I discuss these more inside the PyImageSearch Gurus course.
+Jayamathan March 22, 2017 at 2:09 am #
+Hey thks fr the tutorial. I am working on hand palm images to extract patterns of hand of different individuals and store it in a database and again comparing it so it can use for authentication purpose.
+Can u suggest how can i achieve it?
+Adrian Rosebrock March 22, 2017 at 8:42 am #
+There are many different methods of comparing images to a pre-existing database, this is especially true for hand gesture recognition. In some cases you don’t even need a database of existing images to recognize the gesture.
+In any case, I would suggest working through the PyImageSearch Gurus course where I demonstrate hand gesture recognition methods. I also cover object detection methods (such as HOG + Linear SVM) in great detail.
+catpanic April 5, 2017 at 2:16 am #
+Adrian, how is MSE done for 3-channel image?
+Adrian Rosebrock April 5, 2017 at 11:50 am #
+You simply separate the image into its three respective channels, compute MSE, and then average the result.
+billy April 20, 2017 at 4:58 pm #
+Thanks for the blog,
+Can you help me with this, I need to find the overlapping area between two images so I can stitch them if the overlapping is greater than a certain % ?! , I have found tools e.g OpenCV >> ,BestOf2NearestRangeMatcher but they all show how two find similarities not overlapped area.. I mean there might be similarities in a picture as awhole but I cann’t stitch them bec. they don’t complete each other …
+I would really appriate your help
+Adrian Rosebrock April 21, 2017 at 10:52 am #
+If your goal is to stitch images together, let keypoints and local invariant descriptors help you determine the overlap. I discuss image stitching in this blog post.
+Islam April 22, 2017 at 5:24 am #
+Hi Adrian,
+Could you help me? I want to evaluate segmentation using different motion detection algorithms such as: MOG,GMM and i have dataset of videos and sequence of ground truth images. How can i compare output of my algorithm with ground truth as pixel-based comparison in order to compute TP,TN,FP , FN metrics?
+Adrian Rosebrock April 24, 2017 at 9:47 am #
+If you have the ground-truth data as pixel-based coordinates, then I would suggest using Intersection over Union to help you with the evaluation.
+Peter3 April 30, 2017 at 2:56 am #
+Hi Adrien,
+Is there a way to find differences between two images , and rectangle every each differences ? I have tried opencv and pillow but with no luck. Thank you for your answear,
+Best regards,
+Peter
+Adrian Rosebrock May 1, 2017 at 1:26 pm #
+I would suggest:
+1. Subtracting the two images to obtain the difference.
+2. Thresholding the difference image to find regions with large differences.
+3. Extract these regions via contours, array slicing, etc.
+4. Drawing the bounding boxes around the difference regions.
+In fact, I take a very similar approach when building a highly simplistic motion detector.
+rizwan May 2, 2017 at 5:09 am #
+hi adrien
+i am about to start my first project of my life and it is on comparing new image from live video with an old image which is stored in database……plzz help me…i have no any idea how to do this…
+Adrian Rosebrock May 3, 2017 at 5:53 pm #
+It really depends on the contents of the images, but I would suggest by learning all about image descriptors and how to quantify images. I cover the basics of feature extraction plus a bit of machine learning inside Practical Python and OpenCV. But I would recommend the PyImageSearch Gurus course to you as it covers 30+ lessons on feature extraction and how to compare images for similarity. This approach can be extended to video as well.
+rizwan May 2, 2017 at 5:13 am #
+please sir guide me and also refer the books from which i can learn the stuff like that
+Ambika June 12, 2017 at 1:50 am #
+Hello Adrian,
+Is that necessary to convert the images into grayscale?
+Can’t we find the MSE for colored images as well?
+What changes would we need to make in this code for the same?
+Thanks
+Adrian Rosebrock June 13, 2017 at 11:04 am #
+If you want to compute MSE for color images, simply compute MSE for each individual channel and average the results together. //
+ambika June 15, 2017 at 2:24 am #
+Thanks for the help Adrian!
+But by searching further i got to know about a parameter ‘multichannel’ which when passed as True in the inbuilt ssim function gives mse for color images. 🙂 //
+I guess you might include this information in your post as well 🙂
+Swap B June 20, 2017 at 7:28 pm #
+Hey Adrian,
+I tried executing the code but it is showing me an error,
+og=cv2.cvtColor(og,cv2.COLOR_BGR2GRAY)
+cv2.error: ..\..\..\opencv-3.1.0\modules\imgproc\src\color.cpp:7456: error: (-215) scn == 3 || scn == 4 in function cv::ipp_cvtColor
+*original has been shortened to og,apart from that everything else is same even the images are same.
+According to my knowledge cvtColor requires either 3 or 4 parameters ,but i am unable to understand why i am getting this error here,it never appeared in earlier programs.
+Thankyou in advance !!
+Swap B June 20, 2017 at 7:33 pm #
+Oops sorry it was a mistake on my side ,when i checked .shape i got it as nontype obj , then i checked the path,and yes there was a typo in path…….. 🙁
+Adrian Rosebrock June 22, 2017 at 9:36 am #
+Indeed, this error will happen if your pass an invalid path into cv2.imread. If the path does not exist, cv2.imread will return None (it will not throw an error). Running any other functions on a None object will cause the function to return an error.
+Monthir Ali June 29, 2017 at 5:25 pm #
+Hey Adrian,
+I was wondering if I would be able to use the SSIM method to compare specific number of pixels (lets say 20×20 pixels) on a 720p image. What I need to do is compare each 20×20 with its corresponding 20×20 pixels on the other image and then give an SSIM value for each of these comparisons. would that be possible ? // 
+I wasn’t sure if that had something to do with the win_size parameter but I think it may. I hope my question was clear enough, please feel free to ask me to clarify if it isn’t.
+Regards and thanks in advance!
+Adrian Rosebrock June 30, 2017 at 8:05 am #
+Hi Monthir — this sounds more like a template matching problem. I would start there.
+Monthir Ali July 5, 2017 at 4:17 pm #
+Thanks for your response. I am actually trying to find the difference in intensity rather than matching those group of pixels. I’ve been through the template matching problem but it’s not quite what I am looking for.
+Adrian Rosebrock July 7, 2017 at 10:05 am #
+Can you elaborate more on what you mean by “difference in intensity”? By definition that’s just subtracting the two images from each other.
+Monthir Ali July 7, 2017 at 4:37 pm #
+In short, I am just trying to apply the SSIM method to a block of pixels instead of the whole image. and then cycle through a number of pixel blocks until i cover the desired portion of the image. //
+Adrian Rosebrock July 11, 2017 at 6:50 am #
+That sounds like you might want to use a sliding window to accomplish this. As for the actual image comparison, there are hundreds of methods to accomplish this, it really just depends on the goal of your application.
+Nagashri July 3, 2017 at 3:39 am #
+Hi Adrian..The code written in this website (https://www.pyimagesearch.com/2014/09/15/python-compare-two-images/) does not work when we compare different views of a same monument.//
+For example if we compare top and side view of a temple we do not get them as similar but we should get them as similar.How to achieve this?.Please help..Which feature extraction could be better to achieve this??
+Adrian Rosebrock July 5, 2017 at 6:16 am #
+Correct, this method will not work if you are comparing objects from different viewpoints. In that case, you should consider this as a CBIR problem (i.e., image search engine) and extract keypoints, compute local invariant descriptors, and apply keypoint matching.
+A great example of this can be found in Practical Python and OpenCV where I demonstrate how to identify the covers of books. The same techniques can be applied to your own objects.
+Bladimir July 15, 2017 at 7:04 pm #
+Hello, I need your code to compare two images but I don`t have idea about how to run it. Could you recommend any video tutorial or book to run your code easily ?
+Adrian Rosebrock July 18, 2017 at 10:04 am #
+I would suggest reading up on command line arguments. My book, Practical Python and OpenCV also covers the fundamentals of computer vision, image processing, and OpenCV which would be a good starting point for you if you are new to OpenCV.
+Nada July 24, 2017 at 5:02 pm #
+Hi Adrian,
+I’m using ORB to compare two images to a third image. I use ORB implementation in OpenCV. I figure that Bfmatch returns a vector of hamming distance. I need to measure how similar is image 1 to image 3 and image2 to image3. How can convert that results into a scalar similarity metric? Any suggestion?
+Thanks
+Adrian Rosebrock July 28, 2017 at 10:13 am #
+Hi Nada — I actually cover this exact question inside Practical Python and OpenCV. Inside the book there is a chapter that demonstrates how to recognize the covers of books. You can apply the exact same technique to your project. The method will return a single value that measures similarity. I would suggest you start there.
+Umair August 16, 2017 at 4:32 am #
+Hi Sir … i have a simple question but i feel a little difficulty in it
+Q: i have two feature vectors(.txt) now how to compare that these are same or not please help me by providing the source thanx,,, i will be really thankfull to u for this kind act.
+Adrian Rosebrock August 17, 2017 at 9:11 am #
+Hi Umair — I cannot write the code for you, but I can point you in the right direction. I would suggest computing the distance between your feature vectors. If they are below a certain threshold you can consider them the “same”. Without more knowledge on the types of features you are working with or the images they were extracted from, I cannot provide additional guidance.
+Anak Dagang August 18, 2017 at 5:24 am #
+Nice. Thanks a lot Adrian.
+Christian Setzkorn September 17, 2017 at 12:00 pm #
+Hi there, Thanks for this post. I am getting:
+skimage_deprecation: Function structural_similarity is deprecated and will be removed in version 0.14. Use compare_ssim instead.
+I would think the code around the use of ssim would have to adapted. Any ideas?
+Adrian Rosebrock September 18, 2017 at 2:05 pm #
+Please see this updated blog post.
+Madhu Oruganti` October 10, 2017 at 5:26 am #
+Thank you, Adrian, How can we calculate the PSNR for two image with the help of MSE
+Nooruddin October 11, 2017 at 4:37 pm #
+Want to compare two pdfs (can have text or images) using such method. Also, want to keep in mind colors. Is there a way to achieve an high accuracy pdf comparison in Python? Great Tutorial nevertheless.
+Adrian Rosebrock October 13, 2017 at 8:53 am #
+I would suggest converting the PDF to image files using a tool such as ImageMagick.
+Ishwar October 23, 2017 at 8:31 am #
+want to compare tow images using this method I was Install opencv and python using previous tutorial but i have problem with comparing the images. my images contain one black ring at the center and another image have not i want to differ these two image with this method please any one tell me where should i made mistake to compare images
+Adrian Rosebrock October 23, 2017 at 12:25 pm #
+Hey Ishwar — I’m not sure I understand your question. Can you try to explain it differently? Perhaps an example image would be better.
+Ishwar October 26, 2017 at 2:48 am #
+I want to compare two images where original image have a black ring pattern at the centre of the object and in second image that black ring pattern not present at the centre. I want this difference.
+and also tell me how to show you my both images which i compare. sorry to say but here is no attachment for images or files. Please guide me. Thanks for quick Response.
+Adrian Rosebrock October 26, 2017 at 11:33 am #
+Hi Ishwar — I think you’re looking for a post about image difference. That post is available here. Feel free to post the images on pasteboard.
+Ishwar November 6, 2017 at 2:06 am #
+I Uploaded my images where i want to differ them but problem is that my python cant import skimage library so that i am unable to access compare_ssim function in that to get structural difference. please help me. Thank you
+Adrian Rosebrock November 6, 2017 at 10:29 am #
+Please try this tutorial which covers the updated SSIM function inside of scikit-image.
+Vivek October 28, 2017 at 6:12 am #
+Hiii Andrian, I want to compare two images and want to know in how much percentage they are matching. Could you please let me know how I can do so?
+Adrian Rosebrock October 30, 2017 at 2:36 pm #
+Hi Vivek. There are a few ways to do this. One is by comparing histograms — but this might be too simplistic. Another is by template matching. And yet another way would be by feature matching. Without seeing the types of images you’re comparing it will be hard to recommend a method. Please post links to the images or send them to me in an email.
+Shrinidhi Rao November 13, 2017 at 11:46 pm #
+I am working on a python code to compare two finger prints. I tried using SSIM but I realised it doesn’t take orientation into account. Could you help me with the same? //
+Adrian Rosebrock November 15, 2017 at 1:08 pm #
+I don’t have much experience with comparing fingerprints but in general SSIM is not the best approach. I would suggest reading this post on the OpenCV forums for more information.
+Shrinidhi Rao November 19, 2017 at 1:13 am #
+Thank you for your help! Keep up the good work!!
+Manish December 15, 2017 at 1:55 am #
+Hi,
+on running the programme it throws error as deprecated, and suggests running compare_ssim instead.
+however, when I use compare_ssim, I get the following error:
+in compare_ssim
+if not X.dtype == Y.dtype:
+AttributeError: ‘JpegImageFile’ object has no attribute ‘dtype’
+Not sure how to proceed
+Adrian Rosebrock December 15, 2017 at 8:20 am #
+Hey Manish — I have an updated tutorial on using SSIm that you can find here. I hope that helps!
+Ali January 17, 2018 at 9:02 am #
+hi , i am using Rasberry Pi3B with a camera and want to detected changes occured during video life stream.
+I dont know how to program it with Python.
+Can anyone please give me some tips and help me out this problem.
+Bobby Chan February 6, 2018 at 4:38 am #
+Hi Adrian,
+thank you very much for your information, I am very new to OpenCV, while I was impressed by your articles.
+my question is, if I want to compare two products for defect tracking, assume a simple one first, that is, to recognize the wordings on the product was engraved wrongly, I could have an original product engraved ABC, but then new product produced I do quality check, I want to find out for instance if engraved A8C I will decline.
+so, is that best using scikit-image SSIM compare, together w/ opencv (just like your another article below) to highlight the area then it’s the best way to go?
+https://www.pyimagesearch.com/2017/06/19/image-difference-with-opencv-and-python/ todo
+thanks
+Bobby
+Adrian Rosebrock February 6, 2018 at 10:02 am #
+Hey Bobby — there are a few ways to approach this problem. SSIM would be a good starting point provided you can localize the area you want to compare. Do you have any example images of what you’re working with?
+Bobby February 7, 2018 at 6:25 am #
+Hi Adrian,
+thank you for your reply.
+terribly sorry that product images cannot be posted outside factory, but I can set compare two coins as an example coz we are working w/ metals, I try describe similar scenario here
+1) we compare two coins (can be flat or can have engraved surface), then find out different wordings (wrong spellings)
+2) and, even two coins has no defect, but one coin is darker, one coin is lighter, can I distinguish?
+thank you very much for your advice.
+Bobby
+Adrian Rosebrock February 8, 2018 at 8:32 am #
+Depending on the quality of the images you might be able to extract the words. The problem here is that it’s incredibly difficult to recognize characters on engravings. I ran into similar issues when working on identifying prescription pills.
+Again, whether or not you can accomplish this project is highly dependent on (1) the quality of the captured images and (2) if you can extract the individual characters.
+Felix Dsouza March 13, 2018 at 6:08 am #
+Hi Adrian,
+I am Felix studying at the Frankfurt University of Applied Sciences Germany. I have a question: Is there a way to compare the frames from a live webcam and on a motion detection a boolean output is generated,
+Looking forward to your response and valuable insights.
+Adrian Rosebrock March 14, 2018 at 12:45 pm #
+You mean something like this?
+Yadullah Abidi March 20, 2018 at 2:27 am #
+Hi Adrian
+Is there a way to do this without using matploitlib so that the code only returns the SSIM value?
+What I’m doing is that I’m comparing two images and don’t want all the extra stuff in it. I simply want to compare two images and get the SSIM value which I can use in a standard if-elif to make decisions.
+I tried commenting out the matploitlib part but that broke the code.
+Adrian Rosebrock March 20, 2018 at 5:48 am #
+You certainly do not need matplotlib. I used matplotlib for visualization purposes only. It is not required.
+Take a look at this updated post which uses the latest version of scikit-image to compute image differences and SSIM. You’ll see the SSIM value is returned as a single value that you can use if/else statements with.
+Jack March 23, 2018 at 4:50 am #
+I need to identify a fake facebook login site (which has a login interface like facebook) but the fake login page may be partially lost due to the different screen sizes. What algorithms can I use for processing? I tried SSIM, MSE are not effective (easy to get mistaken)
+Adrian Rosebrock March 27, 2018 at 6:38 am #
+It’s hard to say without seeing any of your example images. Could you share some?
+being_ecstatics April 2, 2018 at 11:05 am #
+hey adarian i just want compare two images.One image.jpg taken from user is to be compare with the images that are already stored in database in jpg format. I am using anaconda. Help me out.
+Adrian Rosebrock April 4, 2018 at 12:22 pm #
+Exactly which method you use for image comparison is highly dependent on the contents of the image and what you are trying to compare. Are you trying to compare the entire image for similarity? Just specific parts of the image? If you can be more specific regarding your project and I can try to point you in the right direction.
+For what it’s worth, I demonstrate how to build a system that can recognize the covers of books by taking an input image from a user and comparing it to a database of book cover images inside Practical Python and OpenCV. I would suggest starting there for the project.
+Himanshu April 5, 2018 at 4:01 am #
+Hi Adrian,
+I am using the above strategies but these are not working perfectly. As one of my image has transparent background.
+what can I do in this case if one image has transparent background and other does not have despite both have the same size
+Adrian Rosebrock April 6, 2018 at 8:57 am #
+Transparent backgrounds can cause a problem as OpenCV will normally default the background to white. In that case you may need to set the background of your transparent image to match the background of your input image.
+shuchao April 6, 2018 at 8:05 am #
+hi adarian, I want to remove similar frames in video, video synopsis, is it possible using ssim, or in other method in python? Thanks for your attention.
+Adrian Rosebrock April 6, 2018 at 8:39 am #
+Yes, that is possible. You could compute the SSIM for subsequent frames in a video and if they are too similar (you’ll need to define a threshold for what “too similar” means) you can ignore the frames. Take a look at the cv2.VideoWriter function for writing frames to a video file.
+shuchao April 6, 2018 at 8:48 am #
+Thanks very much for your rapid reply. Wish you a happy day. I am in China, sorry for my poor english .
+Vishal April 9, 2018 at 2:52 pm #
+I am using template match to detect multiple occurrences of the object (guided by a threshold parameter). I came across a few problems, and I have spent about two weeks trying to find a way to no avail.
+1. If I understand correctly, the template matching algorithms always return a result irrespective of whether the object is present or not. I am using a threshold value to help me filter (choose) the choices that were not detected. So among the matches that are returned, is there a way to measure accuracy of each? (tp + tn/ p + n). The result parameter doesn’t return a metric for tp, tn, fp, fn. It returns the highest value (if I’m using cross correlation or correlation coefficient) and its coordinates. But the highest correlation coefficient value is not a metric for accuracy. Please help me find a way for this.
+2. For squared difference I am to choose minimum value for the best match, how can I use a threshold in this case? Because the minimum value varies case per case basis. What I could do is return top n matches but I’d prefer if I could threshold it in terms of percentage.
+3. Is there a detailed explanation for the formula for template match algorithms in open cv? I have searched a lot for this, but there isn’t any information on the formula and the proofs for it.
+I am using normalized methods for all the algorithms (squared diff, cross correlation and correlation coefficient)
+
+1. Correct, template matching doesn’t actually “care” if the object is present or not. It will return the (x, y)-position of the area with the largest correlation. To filter out false-positives you would need to (manually) set a threshold.
+2. I’m not sure I understand your intention here, particularly the last sentence based on “threshold in terms of percentage”. Could you clarify?
+3. If you haven’t seen it, the template matching docs include the formulas used for each template matching method used in OpenCV.
+Vishal April 19, 2018 at 3:38 pm #
+2. I need a metric to quantify how similar a match is to the template. For example a lower threshold of correlation coefficient normalized, ex: 0.6 gives coordinates to 15 matches. I need a rank for these matches in terms of percentage, like accuracy 0% to 100%. But I don’t know the number of false positive and number of true negatives. How do I calculate it?
+Adrian Rosebrock April 20, 2018 at 9:56 am #
+There are a few ways to approach this. A simple method to get started would be min-max normalization. This will normalize all values in the range [0, 1]. You can then set a threshold based on this value. However, keep in mind that this is not a true percentage. It’s a relative scale based on the minimum and maximum correlation values during the matching process.
+Nitish Kumar May 30, 2018 at 4:19 am #
+Wonderful piece of work…
+Adrian Rosebrock May 31, 2018 at 5:07 am #
+Thanks Nitish! I’m glad you found it helpful.
+harsha June 11, 2018 at 7:11 am #
+Hi adrian can u tell why are u converting images into grayscale rather than comparing original images itself.
+Thanks in advance:)
+Adrian Rosebrock June 13, 2018 at 5:54 am #
+Typically for SSIM you compute on a single channel or grayscale. You can compute over multiple channels as well, it just depends if color is important to your image difference calculation.
+zkoerner June 22, 2018 at 10:27 am #
+What is the proper way to import a jpeg file for the mse to work properly? I am having trouble since a jpeg is not a ‘float’ and I’ve tried many ways to convert the images before the processing.
+Thank you in advance!
+Adrian Rosebrock June 25, 2018 at 2:01 pm #
+The MSE function explicitly converts the input images to floating point data types. Are you getting some sort of error?
+Sunitha June 28, 2018 at 2:48 am #
+hi Adrian
+I am facing problem in running this code
+problem is like that import lines are giving error for me
+Adrian Rosebrock June 28, 2018 at 7:59 am #
+What is the error you are getting? Without knowing the error I cannot provide any suggestions.
+sunitha June 29, 2018 at 12:28 am #
+how to download the sckikit-image libraries .i am using fedora 2.6.35-9
+Adrian Rosebrock July 3, 2018 at 8:52 am #
+You can install scikit-image via pip:
+$ pip install scikit-image
+I suggest you read the scikit-image documentation.
+BABU July 4, 2018 at 11:06 am #
+Greetings Mr. Adrian,
+I was looking for some good simple way of comparing video images. 
+I found your method to read and understand. 
+i am not a coder but work on algorithms and logic being an automation person with mech background. 
+MSE and SSIM gives out numbers that helps to attribute quality diff. 
+Is it possible to reconstruct or indicate quality difference for two dynamic images.My intention is to superimpose them and how the movements are varying. 
+So, for example i have two video files of 10seconds duration. 
+I want to compare if they are same in all respects or diff. 
+may be differing. 
+Can i get a quality output using these scripting , Thanks
+regards
+R.Babu
+Adrian Rosebrock July 5, 2018 at 6:27 am #
+I’d be careful with your wording here as “quality” can have different meanings in computer vision and image processing. What are you defining “quality” to be?
+Amal Fajrin July 15, 2018 at 11:45 pm #
+Hi Adrian,
+I have problem when i want to import “from skimage.measure import structural_similarity as ssim”
+I got this error,
+Traceback (most recent call last):
+File “”, line 1, in
+ImportError: cannot import name ‘structural_similarity’
+Adrian Rosebrock July 17, 2018 at 7:25 am #
+Make sure you’re following this tutorial if you are using a newer version of scikit-image.
+Amal Fajrin July 23, 2018 at 12:44 pm #
+thank you sir
+Shruti July 23, 2018 at 2:38 pm #
+hey! thanks for this video. i need your help as i want to compare two images one is real time and image contains n number of strings and alfanumeric value its kind of comparing rating plates with its pdf can you help me with some logic or algo.
+Adrian Rosebrock July 25, 2018 at 8:09 am #
+Hey Shruti — could you share some example images of what you’re working with? It’s hard to provide recommendations without having more details.
+Tim B August 25, 2018 at 5:12 pm #
+Hi Adrian,
+excellent posts. Keep up the great work. Really interesting. Saving up for the books.
+I had the same problem as Amal, I swapped out line 2 to read…
+2. from skimage.measure import compare_ssim as ssim
+works fine then for opencv 3.4.2
+Adrian Rosebrock August 30, 2018 at 9:32 am #
+Thanks Tim!
+Joel September 17, 2018 at 5:22 am #
+Hello Adrian, i have a project in hand about comparing two face images of the same person and the result should be matching if its the same person. can you suggest me how to go ahead with this process?
+Adrian Rosebrock September 17, 2018 at 2:08 pm #
+Refer to this tutorial on face recognition.
+vinoth raj September 27, 2018 at 5:31 am #
+Hi adrian,
+i got this following error
+ofcourse i installed the required packages sckit
+from skimage.measure import structural_similarity as ssim
+ImportError: cannot import name ‘structural_similarity’
+Adrian Rosebrock October 8, 2018 at 12:33 pm #
+Which version of scikit-image are you using? Try using this tutorial instead.
+Tonmoy Borah October 27, 2018 at 7:15 am #
+Hi Adrian, I have come across this post in 2018. This works well but since deep learning is so popular now, do you think it could do this task better? Specifically, if I want to find similar images (same images after alterations, say partly photoshopped, cropped, resized, brightness changed, retouched etc. from a huge dataset of diverse images.
+Adrian Rosebrock October 29, 2018 at 1:34 pm #
+You would want to apply “perceptual image hashing”.
+Abiodun November 26, 2018 at 11:15 am #
+nice work done…
+please how can I compare video images and stored images to output the given result….
+I’m using raspberry pi3 and opencv3
+Adrian Rosebrock November 26, 2018 at 2:24 pm #
+Are you trying to compare every frame of a video? If so you’ll want to loop over each frame of the video and then apply the comparison. Have you worked with video and OpenCV before? If not, check out this tutorial for an example.
+Teddy December 1, 2018 at 8:21 am #
+Mr. Adrian Rosebrock.
+Through this image comparison codes in Python , I tried this code, but :
+a) the calculation results of SSIM and MSE dont appear along with graph like your example.
+b) meanwhile there is a statement in a red line : “name ‘ssim’ is not defined”
+Kindly guide me further, as I am a newbie in CV module. Thank you so much
+Adrian Rosebrock December 4, 2018 at 10:17 am #
+I would suggest you follow my updated guide on using SSIM with the scikit-image library.
+Chandana January 17, 2019 at 11:35 am #
+Hi Adrian,
+I have a folder with multiple images, some of the images are having duplicates. How can i get rid of all duplicate images at a time? I am totally new to this era.
+Thanks,
+Chandana
+Adrian Rosebrock January 22, 2019 at 9:47 am #
+You’ll want to utilize image hashing to remove duplicates.
+Rengar February 12, 2019 at 3:08 am #
+Hey Adrian, i really need quick help, that’s why i leave a comment, hoping u could help me :).
+Ok the goal is to setup a eye recognition, so let’s say we need to compare 2 images and express a score, i tried your script, and somehow the graphical interface won’t go, so how could i remedy this? 🙂
+Jorge April 16, 2019 at 11:40 am #
+Hi Adrian, first of all, thank you for this great post.
+I was hoping that you could help me with your opinion. I’m trying to make a software that automatically takes a photo when the user places his/her ID in a certain region of a camera. Do you think that your approach in this post is a good first step toward this?
+I am constrained in the sense that the users must be able to use this in low and medium end mobile devices. And if not real time (30 fps) it should be fast. What do you think?, Is there a better approach?
+Many thanks!
+Adrian Rosebrock April 18, 2019 at 6:56 am #
+You can solve that exact project by reading through Practical Python and OpenCV. The book will teach you how to detect faces in images and define areas of an image/frame you want to monitor. The method discussed is also very fast.
+Alex May 23, 2019 at 3:49 pm #
+Hi my friend
+is there any way to deceive this algorithm? i mean a high similarity and ssim close to zero.
+Marlon Luis Petry June 15, 2019 at 6:32 am #
+Hey Doc. Your work are awesome. Congratulations.
+Adrian Rosebrock June 19, 2019 at 2:13 pm #
+Thanks Marlon!
+chaithu June 18, 2019 at 6:59 am #
+Hi Adrian,
+thank you for this great post.
+I have doubt ,
+my question is , i have two different images , but actual condition these two images are theatrically same (make sense these two images are Oct scan image two different person -normal eye)
+my question , how to find the relation between these images , ssim applying time these two images are not similar . i need any mathematical relation have these two images are same or values have any correlation ?
+Adrian Rosebrock June 19, 2019 at 1:49 pm #
+Do you have any example images of what you’re working with? It’s hard to say without seeing the example images.
+chaithu June 24, 2019 at 4:30 am #
+hi Adrian,
+Thanks for your replay,
+please send your email id , i will send the images
+Thanks
+Chaithu
+Adrian Rosebrock June 26, 2019 at 1:23 pm #
+You can use my contact form.
+Ram June 24, 2019 at 4:28 am #
+Hi Adrian,
+That was a very informative post and well explained
+Adrian Rosebrock June 26, 2019 at 1:22 pm #
+Thanks Ram, I’m glad you enjoyed it!
+Robert July 1, 2019 at 6:09 am #
+Dear Adrian,
+I’ve been using some of your tutorials for my latest project, but I’m at a point where I’m unsure which technique is best for what I’m trying to do. I have two scenarios in which I want to identify near-identical/similar images:
+1. Text (in an image) on an almost opaque background (with possibly very very slight dynamic changes between images in the background behind the almost opaque background). I have a “fading in” version with dark text that fades from black to white, and a fully displaying normal version (but I’d like to support all text colors/backgrounds). I want to detect the version of images that aren’t fully faded in yet (which seem to still be captured by your text detector as having text, despite them being very dark; so I want to remove them without risking removing the unfaded text images by e.g. increasing the text detection threshold).
+2. Same scenario as above, but the two types of images now are: a) a normal image w/text, and b) the same image but with the text only partially displayed (the text appears on screen in a type-writer style, and this is a screenshot that might capture the text both before it’s fully displayed and when it’s all showing).
+Like I said, I’m using your EAST text detector tutorial for detecting text; I’m also doing a simple image subtraction/looking for mostly (~90%) black images in the result to detect duplicates; but that isn’t helping me with these scenarios where I’m dealing with contrast or partial image differences, since it ends up just showing white pixels in the areas where there are these sorts of nontrivial differences.
+If you have a tutorial you could point me to that you think could solve these problems (I think this tutorial might be good for the 1st problem?), it would really really help me if you could let me know!!
+Thanks
+Adrian Rosebrock July 4, 2019 at 10:37 am #
+Hey Robert — maybe send me a message instead? This is a bit too much to address in a comment on a blog post.
+karthik September 30, 2019 at 12:30 pm #
+This are really help to learn but here you provide compare only two images in case i want to read multiple images from folder and compare means how can i do that
+Trackbacks/Pingbacks
+Image Difference with OpenCV and Python - PyImageSearch - June 19, 2017
+[…] a previous PyImageSearch blog post, I detailed how to compare two images with Python using the Structural Similarity Index […]
+Before you leave a comment...
+Hey, Adrian here, author of the PyImageSearch blog. I'd love to hear from you, but before you submit a comment, please follow these guidelines:
+If you have a question, read the comments first. You should also search this page (i.e., ctrl + f) for keywords related to your question. It's likely that I have already addressed your question in the comments.
+If you are copying and pasting code/terminal output, please don't. Reviewing another programmers’ code is a very time consuming and tedious task, and due to the volume of emails and contact requests I receive, I simply cannot do it.
+Be respectful of the space. I put a lot of my own personal time into creating these free weekly tutorials. On average, each tutorial takes me 15-20 hours to put together. I love offering these guides to you and I take pride in the content I create. Therefore, I will not approve comments that include large code blocks/terminal output as it destroys the formatting of the page. Kindly be respectful of this space.
+Be patient. I receive 200+ comments and emails per day. Due to spam, and my desire to personally answer as many questions as I can, I hand moderate all new comments (typically once per week). I try to answer as many questions as I can, but I'm only one person. Please don't be offended if I cannot get to your question
+Do you need priority support? Consider purchasing one of my books and courses. I place customer questions and emails in a separate, special priority queue and answer them first. If you are a customer of mine you will receive a guaranteed response from me. If there's any time left over, I focus on the community at large and attempt to answer as many of those questions as I possibly can.
+Thank you for keeping these guidelines in mind before submitting your comment.
