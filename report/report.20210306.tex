@@ -1,16 +1,21 @@
 \section{Introduction}
 Problem statement:
 Recently in China, 
-there are a good deal of controversies about using pictures of others that is unauthorised.
+there are a great deal of controversies about using pictures of others that is unauthorised.
 This leads to a concept called image copyright.
 Image copyright is used to protect the images owned by poeple or companies from copy or reproduce by others automatically.[https://www.pixsy.com/academy/image-user/using-copyrighted-images/]
-Basiclly, images are protected by the image copyright.
-But, many people and companies don't obey the rules, 
-they may illegally use the images of others.
-This stealing problem has been troubled a lot of photographers, firms and companies.
-Many of them went on a court to protect their works. 
+However, a large quantity of firms and individuals didn't obey the rules.
+This stealing problem has been troubled a large amount of photographers, firms and companies.
+Many of them went on a court inorder protect their works by means of law.
 But this weren't work so well because althogh there are copyright, 
 there are still poeple using illegal images  without permisiion.
+According to the information that was published on the website poeple.com.cn,
+From<China Online Copyright Protection Annual Report 2018>, 
+it pointed out that the report pointed out that copyright infringement cases of picture works have exploded, 
+plagiarism and illegal reprinting on public accounts are serious.
+In 2018, China made outstanding achievements in the protection of online copyright. 
+During the "Swords Net 2018" special action, copyright law supervision departments investigated and dealt with 544 online infringement and piracy cases, 
+including 74 criminal cases with a total value of 150 million RMB.
 
 Here is a example recent years in China.
 There was a company called ChinaVisual.
@@ -22,14 +27,14 @@ This organization has first released the picture to the whole world and made a c
 More over, people found other images of national flags which definitely not belongs to ChinaVisual.
 There are also discussions on a chinese social media called weibo about the image copyright of this incident. 
 The Central Committee of the Communist Young League warned the ChinaVisual by using rhetorical question--Are those images of national flags yours?
-This kind of incidents don't just happen in China, things like stealing and using images illegally happens all over the world.
+This kind of incidents didn't just happen in China, things like stealing and using images illegally happens all over the world.
 
 Nowadays, people are putting more importance on the image copyright problems and this lead us to think,
 are there better and more effective way to protect the images?
-The objective of this paper is to conduct a survey regarding to solving the issue of protection of image copyright and explain how they are using the technologies.
+The objective of this paper is to conduct a survey regarding to solve the issue of protection of image copyright and explain how they are using the technologies.
 
 \section{Related Works}
-There have been many things done in the protection of the image copyright. 
+There have been many things can be done in the protection of the image copyright. 
 I seperate this section into three catagories: 
 -Reverse image searching
 -Watermarks-(fourier, basic RBG, fourier, frequency domain)
@@ -66,10 +71,10 @@ The base of the reverse image seaching is do comparsion among images.
 Most of the comparson algorithm is based on colors.
 The method is simply find the red, green, blue value(RGB value) for each images and do comparison.
 RGB value is an additive color model in which red, green, and blue light are added together in various ways to reproduce a broad array of colors.
-This method first collects the RGB value in each of the images and do comparison within them. (need help- not really understand how it works)
+This method first collects the RGB value in each of the images and do comparison within them.
 
 2) Deep learning(CNN)
-Activations of units within top layers of convolutional neural networks (CNN features) are known to be good descriptors for image retrieval.
+Activations of units within top layers of convolutional neural networks (CNN features) are known to be good descriptors for image retrieval.[Gaillard, Mathieu, Elöd Egyed-Zsigmond, and Michael Granitzer. "CNN features for Reverse Image Search." Document numerique 21.1 (2018): 63-90.]
 There are three steps by using the deep learning(CNN).[https://vitalflux.com/reverse-image-search-using-deep-learning-cnn/]
 1. Creat embeddinds in other word numerical feature vector that can reoresent the images.
 2. Once the embeddings are created by the autoencoder network(CNN), these embeddings will need be stored into the data base.
@@ -105,20 +110,20 @@ When colortolerance is 255, pixels of any color are considered identical.
 In general, 
 watermarks are symbols which are placed into physical objects such as documents, photos, etc. and their purpose is to carry information about objects’ authenticity.
 [I. J. Cox, M. L. Miller, J. A. Bloom, J. Fridrich and T. Kalker, “Digital Watermarking and Steganography,” 2nd Edition, Morgan Kaufmann, Burlington, 2008.   [Citation Time(s):2]]
-Watermarks is the most common way to protect images.
+Watermarks are the most common way to protect images.
 There are many capable watermarks for example Fourier Watermarking and other feasible watermarks.
-In the following, I will list the most popular and helpful watermarks nowadays.
+In the following, I will list the most popular and helpful watermarks nowadays(2 different algorithms)
 
 a) Fourier Watermarking[Poljicak, A. et al. “Discrete Fourier transform-based watermarking method with an optimal implementation radius.” J. Electronic Imaging 20 (2011): 033008.]
 Fourier watermarking are using a technology called fourier transform.
 Watermarks are embedded in magnitude of the Fourier transformation.
 Fourier transform is one of the multidimensional transforms which converts a signal from a time/space domain representation to a frequency domain representation.[Wikipedia]
-//need more information
 
 
-b) Frequency Domain watermark by exploiting self-inverting permutations
-[M. Chroni, A. Fylakis and S. Nikolopoulos, "Watermarking Images in the Frequency Domain by Exploiting Self-Inverting Permutations," Journal of Information Security, Vol. 4 No. 2, 2013, pp. 80-91. doi: 10.4236/jis.2013.42010.]
-//need more information
+b)Robust Digital Watermarking
+
+
+
 
 \Third{Image clustering}
 Image clustering is one of the technology that grouping images into clusters such that the images within the same clusters are similar to each other, \
@@ -192,7 +197,7 @@ Sketch
     feature_extraction   
 
 # copyright protection
-    Watermarks  
+    Watermarks  nft fourier frequency domain
 # Image clustering
     - color-based
     - information-based [google pic...a ]
