@@ -1,0 +1,19 @@
+# Conda environment specification. The dependencies defined in this file will
+# be automatically provisioned for runs with userManagedDependencies=False.
+
+# Details about the Conda environment file format:
+# https://conda.io/docs/user-guide/tasks/manage-environments.html#create-env-file-manually
+
+name: imgDispatcher_env
+dependencies:
+  # The python interpreter version.
+  - python=3.9
+
+  - pip
+ 
+  - pip:
+    - Pillow
+    - Image
+
+channels:
+  - conda-forge
