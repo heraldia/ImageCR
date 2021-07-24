@@ -7,6 +7,7 @@ category_set = set()
 threshold_ratio_r2g = 0.1
 threshold_ratio_r2b = 0.1
 threshold_ratio_g2b = 0.1
+threshold_ratio_b2g = 0.1
 threshold_hour = 0
 threshold_minute = 5
 
@@ -34,7 +35,7 @@ def is_in_category(r , g , b , date , hour , minute , category_set):
         if  (k[0] - threshold_ratio_r2g) <= ratio_r2g <= (k[0] + threshold_ratio_r2g) and \
             (k[1] - threshold_ratio_r2b) <= ratio_r2b <= (k[1] + threshold_ratio_r2b) and \
             (k[1] - threshold_ratio_r2b) <= ratio_r2b <= (k[1] + threshold_ratio_r2b) and \
-            (k[2]- threshold_hour) <= minute <= (k[2]+ threshold_hour) and \
+            (k[2]- threshold_hour) <= hour <= (k[2]+ threshold_hour) and \
             (k[3]- threshold_minute) <= minute <= (k[3]+ threshold_minute):
         """
 

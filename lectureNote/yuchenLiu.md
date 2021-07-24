@@ -1,5 +1,6 @@
 Jason yuchen
-刘禹3辰 9年级
+刘禹辰 9年级
+禹辰
 s20477.liu@stu.scie.com.cn
 git: Jason-Liu813
 Josephine [\Claire]
@@ -537,6 +538,16 @@ trial3. https://github.com/heraldia/rse
 
 } 2}}}
 
+2021_0724_0918 13th {{{2 {
+I modified the code. \ImageCR_github\algo\screenshotFolderDispatch\screenshotFolderDispatch.py
+https://ieeexplore.ieee.org/xpl/topAccessedArticles.jsp?punumber=2
+https://www.researchgate.net/publication/317485656_Recognizing_Activities_of_Daily_Living_to_Improve_Well-Being
+https://medium.com/@philipfeng/modern-open-source-messaging-apache-kafka-rabbitmq-nats-pulsar-and-nsq-ca3bf7422db5
+在展示层面上 visulization 要努力，包括图，表，思维脑图, 分类树，时间线
+往顶层写，不要往细节写。
+可以学习一下卓克 老师的科普讲述风格 https://www.bilibili.com/video/av88293976/
+
+} 2}}}
 # todo -------------------------------------------------
 
 josephcz.vscode-markdown-mindmap-preview extension
