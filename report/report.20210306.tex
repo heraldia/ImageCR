@@ -3,7 +3,7 @@ Problem statement:
 Recently in China, 
 there are a great deal of controversies about using pictures of others that is unauthorised.
 This leads to a concept called image copyright.
-Image copyright is used to protect the images owned by poeple or companies from copy or reproduce by others automatically.[https://www.pixsy.com/academy/image-user/using-copyrighted-images/]
+Image copyright is used to protect the images owned by poeple or companies from copy or reproduce by others automatically. % ref. https://www.pixsy.com/academy/image-user/using-copyrighted-images/
 However, a large quantity of firms and individuals didn't obey the rules.
 This stealing problem has been troubled a large amount of photographers, firms and companies.
 Many of them went on a court inorder protect their works by means of law.
@@ -37,7 +37,7 @@ The objective of this paper is to conduct a survey regarding to solve the issue 
 There have been many things can be done in the protection of the image copyright. 
 I seperate this section into three catagories: 
 -Reverse image searching
--Watermarks-(fourier, basic RBG, fourier, frequency domain)
+-Watermarks-(fourier, basic RBG, frequency domain)
 -Image clustering and so on.
 
 \First{Reverse image searching}
@@ -45,8 +45,14 @@ There are many cases that poeple don't know their image has been used by other i
 Therefore, people need tools to find out how can they know that their works has been stolen.
 
 The best mothod is reverse image searching.
-Reverse image searching is a search engine technology that takes an image file as input query and returns results related to the image.[https://whatis.techtarget.com/definition/reverse-image-search][Gaillard, Mathieu, Elöd Egyed-Zsigmond, and Michael Granitzer. "CNN features for Reverse Image Search." Document numerique 21.1 (2018): 63-90.]
-To better understand reverse image search, there are two concept:
+Reverse image searching is a searching engine technology that takes an image file as input query and returns results related to the image.% ref. https://whatis.techtarget.com/definition/reverse-image-search][Gaillard, Mathieu, Elöd Egyed-Zsigmond, and Michael Granitzer. "CNN features for Reverse Image Search." Document numerique 21.1 (2018): 63-90.
+Using reverse image search can get these imformations: % ref. https://tineye.com/faq#why
+-Find sources of images
+-Identify duplicate images(illegally stolen)
+-Find higher resolution of images
+-Locate web pages of the images
+
+To better understand reverse image search, there are two concepts:
 1) Image Retrieval
 Image retrival is a system that normally used in the browsing.
 By searching and retrieving images from the large database of images.
@@ -59,19 +65,40 @@ Examples for this system are Google images or Baidu Image and so on,
 if someone submits a picture of a cat, in return he can get a list of similar images that similar to the input image but nor exacly the same.
 Other mature reverse searching engine consisting Tineye, Noobox and so on.
 
-Using reverse image search can get these imformations:[https://tineye.com/faq#why]
--Find sources of images
--Identify duplicate images(illegally stolen)
--Find higher resolution of images
--Locate web pages of the images
+Most of the IR system contains the following two steps:
+1.(indexing)  for each image in a database, 
+feature vectors capturing certain essential properties of the image is conserved in a feature- base
+2.（searching）given a query image, its feature is computed and compared to other feature vectors of images.
+Last, the similar images will be returned to users.
 
 There are a plenty of good algorithms to attain the reverse image searching.
 The base of the reverse image seaching is do comparsion among images.
-1) Color-based
-Most of the comparson algorithm is based on colors.
-The method is simply find the red, green, blue value(RGB value) for each images and do comparison.
-RGB value is an additive color model in which red, green, and blue light are added together in various ways to reproduce a broad array of colors.
-This method first collects the RGB value in each of the images and do comparison within them.
+
+1) Color histogram and Color correlogram % ref. Image Indexing Using Color Correlograms
+Normallly, color histograms are used as feature vectors of different images,
+it describes the global color distribution, it's representation of the distribution of colors in an image. %rdf. Wiki.
+Although it's a relativly sensitive to small changes of the images.
+It has no spatial information and therfore leads to incorrect resorts.
+
+Color correlogram is a new image feature and it is used for image indexing and comparsion.
+This feature extracts the spatial correlation of colors, 
+and is both effective and inexpensive for content-based image retrieval.
+
+In comparison with the histogram methods, color histograms can operate better in this four aspects:
+1. it contains spatial correlation of colors.
+2. it is easy to compute.
+3. it can be used to describe the global distribution of local spatial correlation of colors.
+4. the size of feature of the images is small.
+
+The color coerrelogram is a method that expresses how the spatial correlation of pairs of colors changes with distance besides the color distribution in an image.
+First，the autocorrelogram of the image will capture the spatial correlation between identical colors.
+Next, the correlogram is needed to be computed.
+A team in Cornell University uses quantities. 
+They defined quantities which calculate the number of pixels of a given color within a given distance from a fixed pixel in two directions: positive horizontal and positive vertical.
+Last, we need to compare. These problems are normally resolved by measuring the distance through the subtraction of the feature vectors.
+
+
+
 
 2) Deep learning(CNN)
 Activations of units within top layers of convolutional neural networks (CNN features) are known to be good descriptors for image retrieval.[Gaillard, Mathieu, Elöd Egyed-Zsigmond, and Michael Granitzer. "CNN features for Reverse Image Search." Document numerique 21.1 (2018): 63-90.]
@@ -89,21 +116,27 @@ In the last part of the procedure(distance or comparison), if the image represen
 there are two algorithms: Minkowski distance and cosine similarity. If the image representation is binary codes, 
 there are also one algorithm: Hamming distance.
 
-3)Using Pixel tolerance:
-[https://support.smartbear.com/testcomplete/docs/testing-with/checkpoints/regions/how-image-comparison-works.html]
-Pixel tolerence is a vlaue that seted to determine that if the two images to besimilar.
-It allowed number of dissimilar pixels. 
-If the number of different pixels is less than or equal to pixelTolerance, 
-then it can be considered the images to be identical.
-For example, there are two images that has 2 dissimilar pixels,
-if the pixel tolerance is 2, then these two images are identical.
 
-4)Using color tolerance:
-This is a range of value of the rgb value(0-255) that needed to be set to determine if the picture is similar,
-Two pixels are considered identical if the difference between intensities of each of their color components does not exceed the specified value.
-For example,when colortolerance is 0, which is the default value, the compared pixels are considered identical only if they have exactly the same color. 
-When colortolerance is 255, pixels of any color are considered identical.
 
+
+
+
+
+
+
+
+
+3)
+
+
+
+
+
+
+
+
+
+4)
 
 \Second{Watermarks}
 % ref. Frequency_Domain_Watermarking_An_Overview.
@@ -221,4 +254,4 @@ Subtractive clustering is a method to find the optimal data point to define a cl
 
 
 
-a
+academy
