@@ -77,6 +77,7 @@ The base of the reverse image seaching is do comparsion among images.
 1) Color histogram and Color correlogram % ref. Image Indexing Using Color Correlograms
 Normallly, color histograms are used as feature vectors of different images,
 it describes the global color distribution, it's representation of the distribution of colors in an image. %rdf. Wiki.
+These image representations in this circumstances is an interger vector called N-bins.
 Although it's a relativly sensitive to small changes of the images.
 It has no spatial information and therfore leads to incorrect resorts.
 
@@ -95,41 +96,42 @@ First，the autocorrelogram of the image will capture the spatial correlation be
 Next, the correlogram is needed to be computed.
 A team in Cornell University uses quantities. 
 They defined quantities which calculate the number of pixels of a given color within a given distance from a fixed pixel in two directions: positive horizontal and positive vertical.
-Last, we need to compare. These problems are normally resolved by measuring the distance through the subtraction of the feature vectors.
+Last, we need to compare. 
+These problems are normally resolved by measuring the distance through the subtraction of the feature vectors.
+
+
+2)Convolutional Neural Networks(CNN) %ref. CNN features for Reverse Image Search
+CNN is a concept in deep learning, it mostly applied to analyzing visual imagery in computer vision.
+CNNs are regularized versions of multilayer perceptrons. 
+Multilayer perceptrons usually mean fully connected networks, that is, each neuron in one layer is connected to all neurons in the next layer. % ref. Wiki
+With these connective layers, it can take advantages of natural signals, 
+these natural signals are often locally highly correlated.
+And also their local statistics of images are invariant to location. 
+If a pattern can appear in one location of an image, it could also appear somewhere else in this image.
+CNN contains three different layers:
+1. The convolution layers, the pooling layer and the Relu
+a) The convolution layer applies a set of discrete convolutions on the output of the previous layer. 
+Each convolution is done using a kernel and produces a 2D feature map. 
+The feature maps contain high activations if their convolutions have detected an interesting motif. 
+This layer can be seen as a layer with connections, 
+so that a neuron can be connected to neurons of the previous layer in the same region. 
+b) The ReLU applies a non-linear function to the output of the convolution layer. 
+Other non-linear activation functions can be applied: 1: hyperbolic tangent 2:sigmoid function 
+c) The pooling layer seperates the output of the previous layer into a grid, 
+then on each cell of the grid a pooling function is applied and outputs only a single value.
+This layer intergrates the semantically similar features into one.
+Last, this function will output a maximum value of a local patch.
+2. the fully connected layers and the loss layer
+
+
+
+By means of the CNN, the class of the network is able to automatically extracted the features from the dataset
+CNN is efficient and widely used because of the amount of data and the computaion power.
 
 
 
 
-2) Deep learning(CNN)
-Activations of units within top layers of convolutional neural networks (CNN features) are known to be good descriptors for image retrieval.[Gaillard, Mathieu, Elöd Egyed-Zsigmond, and Michael Granitzer. "CNN features for Reverse Image Search." Document numerique 21.1 (2018): 63-90.]
-There are three steps by using the deep learning(CNN).[https://vitalflux.com/reverse-image-search-using-deep-learning-cnn/]
-1. Creat embeddinds in other word numerical feature vector that can reoresent the images.
-2. Once the embeddings are created by the autoencoder network(CNN), these embeddings will need be stored into the data base.
-3. Creat a nearest neighbor search algorithm that can search from the database that match the input image.
-
-The information of the images will be extracted by many algorithms, 
-these informations are mostly presented the by p-dimentional vector of numerical features or a q-bit binary code.
-The informations can be devided into low-level feature and high level features, 
-high level feature is difficult to extract for computers becasue it's hard to understand.
-Low level language which shows the details of the image that will be extracted by algorithms such as corners, edges and so on.
-In the last part of the procedure(distance or comparison), if the image representation is p-dimentional vectors,
-there are two algorithms: Minkowski distance and cosine similarity. If the image representation is binary codes, 
-there are also one algorithm: Hamming distance.
-
-
-
-
-
-
-
-
-
-
-
-3)
-
-
-
+3) Perceptual Hashing funtion
 
 
 
@@ -142,10 +144,10 @@ there are also one algorithm: Hamming distance.
 % ref. Frequency_Domain_Watermarking_An_Overview.
 In general, 
 watermarks are symbols which are placed into physical objects such as documents, photos, etc. and their purpose is to carry information about objects’ authenticity.
-[I. J. Cox, M. L. Miller, J. A. Bloom, J. Fridrich and T. Kalker, “Digital Watermarking and Steganography,” 2nd Edition, Morgan Kaufmann, Burlington, 2008.   [Citation Time(s):2]]
+% I. J. Cox, M. L. Miller, J. A. Bloom, J. Fridrich and T. Kalker, “Digital Watermarking and Steganography,” 2nd Edition, Morgan Kaufmann, Burlington, 2008.   [Citation Time(s):2]
 Watermarks are the most common way to protect images.
 There are many capable watermarks for example Fourier Watermarking and other feasible watermarks.
-In the following, I will list the most popular and helpful watermarks nowadays(2 different algorithms)
+In the following part, I will list the most popular and helpful watermarks nowadays(2 different algorithms)
 
 a) Fourier Watermarking[Poljicak, A. et al. “Discrete Fourier transform-based watermarking method with an optimal implementation radius.” J. Electronic Imaging 20 (2011): 033008.]
 Fourier watermarking are using a technology called fourier transform.
@@ -183,36 +185,6 @@ item classification.
 if not exist, write into Proposed Method.
 
 4.k-means
-
-
-
-
-
-thought:
-1. target image: opencv get its sketch_t ���軭.  feature engineering.
-
-hough line transformation
-
-benefits:
-applications:
-computation, storage (feature vectors, [90,90,40,40,0], [90,90,10,10,10];
-        machine learning model ).
-
-2. get set_of_sketches of images from tineye
-3. search if sketch_t is in set_of_sketches, set()
-
-{
-'ladder': [ index of images];
-'railroad': [ index of images];
-'road': [ index of images];
-}
-//cannot understand this part
-
-
-
-
-
-
 
 
 
