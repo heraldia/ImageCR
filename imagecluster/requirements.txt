@@ -1,0 +1,10 @@
+# ~150 MB (pip)
+tensorflow-cpu >= 2
+# If you have a GPU. > 500 MB (pip) .. come on, really?
+##tensorflow
+
+numpy
+Pillow
+scikit-learn
+matplotlib
+piexif
